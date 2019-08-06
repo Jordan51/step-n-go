@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      maxWidth: 200
+      width: "350px"
     }
   })
 );

@@ -1,6 +1,6 @@
 import React from "react";
 
-import AddTravel from "./components/AddTravel";
+import AddTravel from "./pages/AddTravel";
 
 const App: React.FC = () => {
   return (
