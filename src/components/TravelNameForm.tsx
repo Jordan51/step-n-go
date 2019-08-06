@@ -11,6 +11,7 @@ const TravelNameForm: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTravelName(event.target.value);
+    event.preventDefault();
   };
 
   return (
@@ -36,13 +37,7 @@ const useStyles = makeStyles((theme: Theme) =>
     textField: {
       marginLeft: theme.spacing(1),
       marginRight: theme.spacing(1),
-      width: 200
-    },
-    dense: {
-      marginTop: 19
-    },
-    menu: {
-      width: 200
+      maxWidth: 200
     }
   })
 );

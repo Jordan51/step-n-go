@@ -1,9 +1,10 @@
 import React from "react";
 
 import TravelNameForm from "./TravelNameForm";
-import TravelDestinationForm from "./TravelDestinationForm";
 import TravelTypeForm from "./TravelTypeForm";
-import TravelStepsForm from "./TravelStepsForm";
+import TravelDepartureAndDestinationForm from "./TravelDepartureAndDestinationForm";
+import TravelTransportForm from "./TravelTransportForm";
+import TravelActivitiesForm from "./TravelActivitiesForm";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
@@ -12,35 +13,15 @@ import StepButton from "@material-ui/core/StepButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import TravelDepartureForm from "./TravelDepartureForm";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%"
-    },
-    button: {
-      marginRight: theme.spacing(1)
-    },
-    completed: {
-      display: "inline-block"
-    },
-    instructions: {
-      marginTop: theme.spacing(1),
-      marginBottom: theme.spacing(1)
-    },
-    stepContainer: {
-      minHeight: "300px",
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "center",
-      alignItems: "center"
-    }
-  })
-);
 
 function getSteps() {
-  return ["Nom du voyage", "Départ", "Destination", "Type de voyage", "Etapes"];
+  return [
+    "Nom du voyage",
+    "Type de voyage",
+    "Départ/Destination",
+    "Transport",
+    "Activités"
+  ];
 }
 
 function getStepContent(step: number) {
@@ -48,13 +29,13 @@ function getStepContent(step: number) {
     case 0:
       return <TravelNameForm />;
     case 1:
-      return <TravelDepartureForm />;
-    case 2:
-      return <TravelDestinationForm />;
-    case 3:
       return <TravelTypeForm />;
+    case 2:
+      return <TravelDepartureAndDestinationForm />;
+    case 3:
+      return <TravelTransportForm />;
     case 4:
-      return <TravelStepsForm />;
+      return <TravelActivitiesForm />;
     default:
       return "Unknown step";
   }
@@ -81,6 +62,7 @@ const AddTravel: React.FC = () => {
   }
 
   function allStepsCompleted() {
+    console.log(completedSteps(), totalSteps());
     return completedSteps() === totalSteps();
   }
 
@@ -138,10 +120,10 @@ const AddTravel: React.FC = () => {
           </>
         ) : (
           <>
-            <Box className={classes.stepContainer}>
+            <Box m={2} className={classes.stepContainer}>
               {getStepContent(activeStep)}
             </Box>
-            <Box>
+            <Box className={classes.actionsButtonsContainer}>
               <Button
                 disabled={activeStep === 0}
                 onClick={handleBack}
@@ -155,25 +137,26 @@ const AddTravel: React.FC = () => {
                 onClick={handleNext}
                 className={classes.button}
               >
-                Continuer
+                {activeStep === totalSteps() - 1 ? "Terminer" : "Continuer"}
               </Button>
-              {activeStep !== steps.length &&
+              {/* {activeStep !== steps.length &&
                 (completed[activeStep] ? (
                   <Typography variant="caption" className={classes.completed}>
                     Step {activeStep + 1} already completed
                   </Typography>
                 ) : (
-                  <></>
-                  //   <Button
-                  //     variant="contained"
-                  //     color="primary"
-                  //     onClick={handleComplete}
-                  //   >
-                  //     {completedSteps() === totalSteps() - 1
-                  //       ? "Finish"
-                  //       : "Complete Step"}
-                  //   </Button>
-                ))}
+                  <>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleComplete}
+                    >
+                      {completedSteps() === totalSteps() - 1
+                        ? "Terminer"
+                        : "Continuer"}
+                    </Button>
+                  </>
+                ))} */}
             </Box>
           </>
         )}
@@ -181,5 +164,36 @@ const AddTravel: React.FC = () => {
     </div>
   );
 };
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: "100%"
+    },
+    button: {
+      marginTop: theme.spacing(2),
+      marginRight: theme.spacing(1)
+    },
+    completed: {
+      display: "inline-block"
+    },
+    instructions: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1)
+    },
+    stepContainer: {
+      minHeight: "200px",
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center"
+    },
+    actionsButtonsContainer: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center"
+    }
+  })
+);
 
 export default AddTravel;
