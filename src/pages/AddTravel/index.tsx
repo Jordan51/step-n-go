@@ -17,6 +17,7 @@ import StepButton from "@material-ui/core/StepButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { DisplayResolution } from "../../components/DisplayResolution";
 
 const steps = [
   "Nom du voyage",
@@ -73,7 +74,7 @@ const AddTravel: React.FC = () => {
   }
 
   function allStepsCompleted() {
-    console.log(completedSteps(), totalSteps());
+    // console.log(completedSteps(), totalSteps());
     return completedSteps() === totalSteps();
   }
 
@@ -176,6 +177,7 @@ const AddTravel: React.FC = () => {
           )}
         </>
       </div>
+      <DisplayResolution />
     </TravelContext.Provider>
   );
 };

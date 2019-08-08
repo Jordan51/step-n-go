@@ -1,5 +1,6 @@
 import React from "react";
 
+import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
@@ -11,8 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
-import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
@@ -21,6 +22,7 @@ import {
 
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AlarmIcon from "@material-ui/icons/Alarm";
 
 // TODO: Deleting step button
 // TODO: Sorting the steps according to the departure dates
@@ -156,26 +158,38 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 variant="inline"
                 inputVariant="outlined"
                 format="dd/MM/yyyy"
+                InputAdornmentProps={{ position: "end" }}
                 hiddenLabel
                 disablePast
                 autoOk
                 helperText="Date de départ"
+                placeholder="jj/mm/aaaa"
                 value={transport.depDate}
                 onChange={date => setTransport({ ...transport, depDate: date })}
+                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                KeyboardButtonProps={{
+                  className: classes.dateAndTimePickerButton
+                }}
               />
             </Grid>
             <Grid item xs={6} sm={2}>
               <KeyboardTimePicker
                 id="mui-pickers-time"
-                className={classes.datePickers}
+                className={classes.timePickers}
                 margin="dense"
                 variant="inline"
                 inputVariant="outlined"
+                InputAdornmentProps={{ position: "end" }}
                 ampm={false}
                 helperText="Heure de départ"
+                placeholder="hh:mm"
                 value={transport.depHour}
                 onChange={date => setTransport({ ...transport, depHour: date })}
-                KeyboardButtonProps={{ "aria-label": "dense hidden label" }}
+                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                KeyboardButtonProps={{
+                  className: classes.dateAndTimePickerButton
+                }}
+                keyboardIcon={<AlarmIcon />}
               />
             </Grid>
 
@@ -214,26 +228,38 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 variant="inline"
                 inputVariant="outlined"
                 format="dd/MM/yyyy"
-                hiddenLabel={true}
+                hiddenLabel
                 disablePast
                 autoOk
                 helperText="Date d'arrivée"
+                placeholder="jj/mm/aaaa"
                 value={transport.arrDate}
                 onChange={date => setTransport({ ...transport, arrDate: date })}
+                InputAdornmentProps={{ position: "end" }}
+                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                KeyboardButtonProps={{
+                  className: classes.dateAndTimePickerButton
+                }}
               />
             </Grid>
             <Grid item xs={6} sm={2}>
               <KeyboardTimePicker
                 id="travel-arrival-hour"
-                className={classes.datePickers}
+                className={classes.timePickers}
                 margin="dense"
                 variant="inline"
                 inputVariant="outlined"
                 ampm={false}
                 helperText="Heure d'arrivée"
+                placeholder="hh:mm"
                 value={transport.arrHour}
                 onChange={date => setTransport({ ...transport, arrHour: date })}
-                KeyboardButtonProps={{ "aria-label": "dense hidden label" }}
+                InputAdornmentProps={{ position: "end" }}
+                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                KeyboardButtonProps={{
+                  className: classes.dateAndTimePickerButton
+                }}
+                keyboardIcon={<AlarmIcon />}
               />
             </Grid>
           </Grid>
@@ -311,6 +337,19 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     datePickers: {
       marginTop: 0
+      // width: 150
+    },
+    timePickers: {
+      marginTop: 0
+      // width: 120
+    },
+    dateAndTimePickerButtonInput: {
+      // backgroundColor: "blue",
+      paddingRight: theme.spacing(0.5)
+    },
+    dateAndTimePickerButton: {
+      // backgroundColor: "red",
+      padding: theme.spacing(0.5)
     },
     fab: {
       margin: theme.spacing(1)

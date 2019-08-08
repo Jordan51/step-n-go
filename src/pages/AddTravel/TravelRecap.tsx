@@ -44,7 +44,6 @@ const TravelRecap: React.FC = () => {
       {/* TRANSPORT(S) */}
       <div style={{ display: "flex" }}>
         <p className={classes.leftSide}>Transport(s):</p>
-        {console.log(travel.transport)}
         {/* {travel.transport.map((t, idx) => (
           <ul>
             <li>
