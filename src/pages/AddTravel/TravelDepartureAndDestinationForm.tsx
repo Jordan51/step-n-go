@@ -3,14 +3,14 @@ import React from "react";
 import TravelDepartureForm from "./TravelDepartureForm";
 import TravelDestinationForm from "./TravelDestinationForm";
 
-// import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import ArrowRight from "@material-ui/icons/ArrowRightAlt";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
 
 const TravelDepartureAndDestinationForm: React.FC = () => {
-  // const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <Grid
@@ -19,6 +19,7 @@ const TravelDepartureAndDestinationForm: React.FC = () => {
       justify="center"
       alignItems="center"
       spacing={3}
+      className={classes.root}
     >
       <Grid item xs={12} sm={10} md={5}>
         <TravelDepartureForm />
@@ -33,6 +34,12 @@ const TravelDepartureAndDestinationForm: React.FC = () => {
   );
 };
 
-// const useStyles = makeStyles((theme: Theme) => createStyles({}));
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      // maxWidth: 1200
+    }
+  })
+);
 
 export default TravelDepartureAndDestinationForm;

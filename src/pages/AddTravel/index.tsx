@@ -183,6 +183,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     stepContainer: {
       minHeight: "200px",
+      maxWidth: 1200,
+      marginRight: "auto",
+      marginLeft: "auto",
       display: "flex",
       flexDirection: "row",
       justifyContent: "center",
