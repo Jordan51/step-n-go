@@ -5,25 +5,22 @@ import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-
-interface State {
-  country: string;
-  city: string;
-  address: string;
-}
+import { DepartureAndDestinationType } from "./TravelDepartureAndDestinationForm";
+import { TravelContext } from "./TravelContext";
 
 const TravelDepartureForm: React.FC = () => {
   const classes = useStyles();
-  const [travelDeparture, setTravelDeparture] = React.useState<State>({
-    country: "",
-    city: "",
-    address: ""
-  });
+  const { travel, updateTravel } = React.useContext(TravelContext);
 
-  const handleChange = (name: keyof State) => (
+  const handleChange = (name: keyof DepartureAndDestinationType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTravelDeparture({ ...travelDeparture, [name]: event.target.value });
+    const newDeparture: DepartureAndDestinationType = {
+      ...travel.departure,
+      [name]: event.target.value
+    };
+
+    updateTravel({ ...travel, departure: newDeparture });
   };
 
   return (
@@ -42,7 +39,7 @@ const TravelDepartureForm: React.FC = () => {
               id="travel-departure-country"
               label="Pays"
               className={classes.textField}
-              value={travelDeparture.country}
+              value={travel.departure.country}
               onChange={handleChange("country")}
               margin="normal"
             />
@@ -52,7 +49,7 @@ const TravelDepartureForm: React.FC = () => {
               id="travel-departure-city"
               label="Ville"
               className={classes.textField}
-              value={travelDeparture.city}
+              value={travel.departure.city}
               onChange={handleChange("city")}
               margin="normal"
             />
@@ -62,7 +59,7 @@ const TravelDepartureForm: React.FC = () => {
               id="travel-departure-address"
               label="Adresse"
               className={classes.textField}
-              value={travelDeparture.address}
+              value={travel.departure.address}
               onChange={handleChange("address")}
               margin="normal"
             />

@@ -2,16 +2,18 @@ import React from "react";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import { TravelContext } from "./TravelContext";
 
 const TravelNameForm: React.FC = () => {
   const classes = useStyles();
-  const [travelName, setTravelName] = React.useState<string>("");
+  const { travel, updateTravel } = React.useContext(TravelContext);
+  // const [travelName, setTravelName] = React.useState<string>("");
 
-  const handleChange = (name: string) => (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setTravelName(event.target.value);
-    event.preventDefault();
+  const handleChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newTravelName: string = !!event.target.value
+      ? event.target.value
+      : "";
+    updateTravel({ ...travel, name: newTravelName });
   };
 
   return (
@@ -20,8 +22,8 @@ const TravelNameForm: React.FC = () => {
         id="travel-name"
         label="Nom du voyage"
         className={classes.textField}
-        value={travelName}
-        onChange={handleChange("name")}
+        value={travel.name}
+        onChange={handleChange()}
         margin="normal"
       />
     </form>

@@ -1,11 +1,15 @@
 import React from "react";
 
+// Components
 import TravelNameForm from "./TravelNameForm";
-import TravelTypeForm from "./TravelTypeForm";
+import TravelCategoryForm from "./TravelCategoryForm";
 import TravelDepartureAndDestinationForm from "./TravelDepartureAndDestinationForm";
 import TravelTransportForm from "./TravelTransportForm";
 import TravelActivitiesForm from "./TravelActivitiesForm";
+import TravelRecap from "./TravelRecap";
+import { TravelContext, defaultTravel, TravelType } from "./TravelContext";
 
+// Material-ui
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -14,14 +18,16 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-function getSteps() {
-  return [
-    "Nom du voyage",
-    "Type de voyage",
-    "Départ/Destination",
-    "Transport",
-    "Activités"
-  ];
+const steps = [
+  "Nom du voyage",
+  "Type de voyage",
+  "Départ/Destination",
+  "Transport",
+  "Activités"
+];
+
+function totalSteps() {
+  return steps.length;
 }
 
 function getStepContent(step: number) {
@@ -29,7 +35,7 @@ function getStepContent(step: number) {
     case 0:
       return <TravelNameForm />;
     case 1:
-      return <TravelTypeForm />;
+      return <TravelCategoryForm />;
     case 2:
       return <TravelDepartureAndDestinationForm />;
     case 3:
@@ -43,15 +49,20 @@ function getStepContent(step: number) {
 
 const AddTravel: React.FC = () => {
   const classes = useStyles();
+  const [travel, setTravel] = React.useState(defaultTravel);
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
   );
-  const steps = getSteps();
 
-  function totalSteps() {
-    return steps.length;
-  }
+  const updateTravel = (newTravel: TravelType) => {
+    setTravel(newTravel);
+  };
+
+  const transportProviderValue = React.useMemo(
+    () => ({ travel, updateTravel }),
+    [travel, updateTravel]
+  );
 
   function completedSteps() {
     return Object.keys(completed).length;
@@ -97,49 +108,50 @@ const AddTravel: React.FC = () => {
   }
 
   return (
-    <div className={classes.root}>
-      <Stepper nonLinear activeStep={activeStep}>
-        {steps.map((label, index) => (
-          <Step key={label}>
-            <StepButton
-              onClick={handleStep(index)}
-              completed={completed[index]}
-            >
-              {label}
-            </StepButton>
-          </Step>
-        ))}
-      </Stepper>
-      <>
-        {allStepsCompleted() ? (
-          <>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
-            </Typography>
-            <Button onClick={handleReset}>Reset</Button>
-          </>
-        ) : (
-          <>
-            <Box m={2} className={classes.stepContainer}>
-              {getStepContent(activeStep)}
-            </Box>
-            <Box className={classes.actionsButtonsContainer}>
-              <Button
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                className={classes.button}
+    <TravelContext.Provider value={transportProviderValue}>
+      <div className={classes.root}>
+        <Stepper nonLinear activeStep={activeStep}>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              <StepButton
+                onClick={handleStep(index)}
+                completed={completed[index]}
               >
-                Précédent
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                className={classes.button}
-              >
-                {activeStep === totalSteps() - 1 ? "Terminer" : "Continuer"}
-              </Button>
-              {/* {activeStep !== steps.length &&
+                {label}
+              </StepButton>
+            </Step>
+          ))}
+        </Stepper>
+        <>
+          {allStepsCompleted() ? (
+            <>
+              <Typography className={classes.instructions}>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Button onClick={handleReset}>Reset</Button>
+            </>
+          ) : (
+            <>
+              <Box m={2} className={classes.stepContainer}>
+                {getStepContent(activeStep)}
+              </Box>
+              <Box className={classes.actionsButtonsContainer}>
+                <Button
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  className={classes.button}
+                >
+                  Précédent
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  className={classes.button}
+                >
+                  {activeStep === totalSteps() - 1 ? "Terminer" : "Continuer"}
+                </Button>
+                {/* {activeStep !== steps.length &&
                 (completed[activeStep] ? (
                   <Typography variant="caption" className={classes.completed}>
                     Step {activeStep + 1} already completed
@@ -157,11 +169,14 @@ const AddTravel: React.FC = () => {
                     </Button>
                   </>
                 ))} */}
-            </Box>
-          </>
-        )}
-      </>
-    </div>
+              </Box>
+
+              <TravelRecap />
+            </>
+          )}
+        </>
+      </div>
+    </TravelContext.Provider>
   );
 };
 

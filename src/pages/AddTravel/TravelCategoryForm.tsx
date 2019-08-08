@@ -4,16 +4,21 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { TravelContext } from "./TravelContext";
 
-type TravelTypes =
+// TODO: Add more categories
+// TODO: Add a filter system
+
+export type TravellingCategoryType =
   | "Camping"
   | "Croisière"
   | "Déplacement professionnel"
   | "Festival"
   | "Voyage touristique"
-  | "Séjour linguistique";
+  | "Séjour linguistique"
+  | "";
 
-const TravelTypesValues: TravelTypes[] = [
+const TravellingCategories = [
   "Camping",
   "Croisière",
   "Déplacement professionnel",
@@ -22,40 +27,27 @@ const TravelTypesValues: TravelTypes[] = [
   "Séjour linguistique"
 ];
 
-interface State {
-  travelType: TravelTypes | "";
-}
-
-type Action = { type: "travelType"; value: TravelTypes };
-
-const initialState: State = {
-  travelType: ""
-};
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "travelType":
-      return { ...state, travelType: action.value };
-    default:
-      return state;
-  }
-}
-
-const TravelTypeForm: React.FC = () => {
+const TravelCategoryForm: React.FC = () => {
   const classes = useStyles();
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const { travel, updateTravel } = React.useContext(TravelContext);
+
+  const handleChange = (category: TravellingCategoryType) => (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    updateTravel({ ...travel, category: category });
+  };
 
   return (
     <Box className={classes.root}>
-      {TravelTypesValues.map((type, idx) => (
+      {TravellingCategories.map((category, idx) => (
         <Button
-          variant={state.travelType === type ? "contained" : "outlined"}
+          variant={travel.category === category ? "contained" : "outlined"}
           key={idx}
-          onClick={() => dispatch({ type: "travelType", value: type })}
+          onClick={handleChange(category as TravellingCategoryType)}
           color="primary"
           className={classes.button}
         >
-          {type}
+          {category}
         </Button>
       ))}
     </Box>
@@ -75,4 +67,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default TravelTypeForm;
+export default TravelCategoryForm;

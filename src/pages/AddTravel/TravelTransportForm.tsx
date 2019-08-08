@@ -24,7 +24,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 // TODO: Deleting step button
 // TODO: Sorting the steps according to the departure dates
-// TODO: Change Time picker format from 12 to 24 hours
+// TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
 type TransportModes = "Avion" | "Bus" | "Train" | "Voiture" | "";
 const transportModes: TransportModes[] = ["Avion", "Bus", "Train", "Voiture"];
@@ -45,7 +45,7 @@ const locationExamples = [
 const randomLocationExample =
   locationExamples[Math.floor(Math.random() * locationExamples.length)];
 
-interface TransportI {
+export type TransportType = {
   depLocation: string;
   depDate: Date | null;
   depHour: Date | null;
@@ -55,13 +55,14 @@ interface TransportI {
   arrHour: Date | null;
   mode: TransportModes | "";
   ref: string;
-  prix: number | "";
+  price: number | "";
   nbPers: number;
-}
+  commentary: string;
+};
 
-type State = Array<TransportI>;
+type State = Array<TransportType>;
 
-const emptyTransport: TransportI = {
+export const defaultTransport: TransportType = {
   depLocation: "",
   depDate: new Date(),
   depHour: new Date(),
@@ -71,20 +72,21 @@ const emptyTransport: TransportI = {
   arrHour: new Date(),
   mode: "",
   ref: "",
-  prix: "",
-  nbPers: 1
+  price: "",
+  nbPers: 1,
+  commentary: ""
 };
 
-const initialState: State = [emptyTransport];
+const initialState: State = [defaultTransport];
 
-const Transport: React.FC<{ data: TransportI; step: number }> = ({
+const Transport: React.FC<{ data: TransportType; step: number }> = ({
   data,
   step
 }) => {
   const classes = useStyles();
-  const [transport, setTransport] = React.useState<TransportI>(data);
+  const [transport, setTransport] = React.useState<TransportType>(data);
 
-  const handleChange = (name: keyof TransportI) => (
+  const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setTransport({ ...transport, [name]: event.target.value });
@@ -148,7 +150,7 @@ const Transport: React.FC<{ data: TransportI; step: number }> = ({
             </Grid>
             <Grid item xs={6} sm={2}>
               <KeyboardDatePicker
-                id="mui-pickers-date"
+                id="travel-departure-date"
                 className={classes.datePickers}
                 margin="dense"
                 variant="inline"
@@ -212,7 +214,7 @@ const Transport: React.FC<{ data: TransportI; step: number }> = ({
                 variant="inline"
                 inputVariant="outlined"
                 format="dd/MM/yyyy"
-                hiddenLabel
+                hiddenLabel={true}
                 disablePast
                 autoOk
                 helperText="Date d'arrivée"
@@ -262,7 +264,7 @@ const TravelTransportForm: React.FC = () => {
         aria-label="add"
         variant="extended"
         className={classes.fab}
-        onClick={() => setTransports([...transports, emptyTransport])}
+        onClick={() => setTransports([...transports, defaultTransport])}
       >
         Ajouter uen étape
         <AddIcon className={classes.extendedIcon} />

@@ -4,10 +4,21 @@ import TravelDepartureForm from "./TravelDepartureForm";
 import TravelDestinationForm from "./TravelDestinationForm";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import ArrowRight from "@material-ui/icons/ArrowRightAlt";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
+
+export type DepartureAndDestinationType = {
+  country: string;
+  city: string;
+  address: string;
+};
+
+export const defaultDepartureAndDestination = {
+  country: "",
+  city: "",
+  address: ""
+};
 
 const TravelDepartureAndDestinationForm: React.FC = () => {
   const classes = useStyles();
