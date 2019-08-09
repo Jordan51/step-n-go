@@ -12,7 +12,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import InputAdornment from "@material-ui/core/InputAdornment";
 
 import {
   MuiPickersUtilsProvider,
@@ -28,8 +27,22 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 // TODO: Sorting the steps according to the departure dates
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
-type TransportModes = "Avion" | "Bus" | "Train" | "Voiture" | "";
-const transportModes: TransportModes[] = ["Avion", "Bus", "Train", "Voiture"];
+type TransportModes =
+  | "Avion"
+  | "Bus"
+  | "Métro"
+  | "Taxi"
+  | "Train"
+  | "Voiture"
+  | "";
+const transportModes: TransportModes[] = [
+  "Avion",
+  "Bus",
+  "Métro",
+  "Taxi",
+  "Train",
+  "Voiture"
+];
 
 const locationExamples = [
   "Aéroport Paris Charles De Gaulle (Paris)",
@@ -292,7 +305,7 @@ const TravelTransportForm: React.FC = () => {
         className={classes.fab}
         onClick={() => setTransports([...transports, defaultTransport])}
       >
-        Ajouter uen étape
+        Ajouter une étape
         <AddIcon className={classes.extendedIcon} />
       </Fab>
     </Box>
