@@ -4,7 +4,7 @@ import React from "react";
 import TravelNameForm from "./TravelNameForm";
 import TravelCategoryForm from "./TravelCategoryForm";
 import TravelDepartureAndDestinationForm from "./TravelDepartureAndDestinationForm";
-import TravelTransportForm from "./TravelTransportForm";
+import TravelTransportAndHousingForm from "./TravelTransportAndAccommodationForm";
 import TravelActivitiesForm from "./TravelActivitiesForm";
 import TravelRecap from "./TravelRecap";
 import { TravelContext, defaultTravel, TravelType } from "./TravelContext";
@@ -23,7 +23,7 @@ const steps = [
   "Nom du voyage",
   "Type de voyage",
   "Départ/Destination",
-  "Transport",
+  "Transport/Hébergement",
   "Activités"
 ];
 
@@ -40,7 +40,7 @@ function getStepContent(step: number) {
     case 2:
       return <TravelDepartureAndDestinationForm />;
     case 3:
-      return <TravelTransportForm />;
+      return <TravelTransportAndHousingForm />;
     case 4:
       return <TravelActivitiesForm />;
     default:

@@ -9,7 +9,7 @@ const TravelNameForm: React.FC = () => {
   const { travel, updateTravel } = React.useContext(TravelContext);
   // const [travelName, setTravelName] = React.useState<string>("");
 
-  const handleChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newTravelName: string = !!event.target.value
       ? event.target.value
       : "";
@@ -23,7 +23,7 @@ const TravelNameForm: React.FC = () => {
         label="Nom du voyage"
         className={classes.textField}
         value={travel.name}
-        onChange={handleChange()}
+        onChange={handleChange}
         margin="normal"
       />
     </form>

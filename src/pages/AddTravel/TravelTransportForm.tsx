@@ -1,5 +1,7 @@
 import React from "react";
 
+import { TravelContext, generateID } from "./TravelContext";
+
 import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 
@@ -19,15 +21,12 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
-import AddIcon from "@material-ui/icons/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
 import AlarmIcon from "@material-ui/icons/Alarm";
+import DeleteIcon from "@material-ui/icons/Delete";
 
-// TODO: Deleting step button
-// TODO: Sorting the steps according to the departure dates
-// TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
+// TODO: Add controll so it is not possible to arrive before you leave!
 
-type TransportModes =
+type TransportTypes =
   | "Avion"
   | "Bus"
   | "Métro"
@@ -35,7 +34,8 @@ type TransportModes =
   | "Train"
   | "Voiture"
   | "";
-const transportModes: TransportModes[] = [
+
+const transportModes: TransportTypes[] = [
   "Avion",
   "Bus",
   "Métro",
@@ -43,6 +43,42 @@ const transportModes: TransportModes[] = [
   "Train",
   "Voiture"
 ];
+
+export type TransportType = {
+  id: string;
+  depLocation: string;
+  depDate: Date;
+  depHour: Date;
+  arrLocation: string;
+  arrCity: string;
+  arrDate: Date;
+  arrHour: Date;
+  mode: TransportTypes | "";
+  ref: string;
+  price: number | "";
+  nbPers: number;
+  commentary: string;
+};
+
+export const defaultTransport: TransportType = {
+  id: generateID("transportID"),
+  depLocation: "",
+  depDate: new Date(),
+  depHour: new Date(),
+  arrLocation: "",
+  arrCity: "",
+  arrDate: new Date(),
+  arrHour: new Date(),
+  mode: "",
+  ref: "",
+  price: "",
+  nbPers: 1,
+  commentary: ""
+};
+
+type State = Array<TransportType>;
+
+const initialState: State = [defaultTransport];
 
 const locationExamples = [
   "Aéroport Paris Charles De Gaulle (Paris)",
@@ -60,65 +96,51 @@ const locationExamples = [
 const randomLocationExample =
   locationExamples[Math.floor(Math.random() * locationExamples.length)];
 
-export type TransportType = {
-  depLocation: string;
-  depDate: Date | null;
-  depHour: Date | null;
-  arrLocation: string;
-  arrCity: string;
-  arrDate: Date | null;
-  arrHour: Date | null;
-  mode: TransportModes | "";
-  ref: string;
-  price: number | "";
-  nbPers: number;
-  commentary: string;
-};
-
-type State = Array<TransportType>;
-
-export const defaultTransport: TransportType = {
-  depLocation: "",
-  depDate: new Date(),
-  depHour: new Date(),
-  arrLocation: "",
-  arrCity: "",
-  arrDate: new Date(),
-  arrHour: new Date(),
-  mode: "",
-  ref: "",
-  price: "",
-  nbPers: 1,
-  commentary: ""
-};
-
-const initialState: State = [defaultTransport];
-
-const Transport: React.FC<{ data: TransportType; step: number }> = ({
-  data,
-  step
-}) => {
+const TravelTransportForm: React.FC<{
+  index: number;
+  handleDelete: () => void;
+}> = ({ index, handleDelete }) => {
   const classes = useStyles();
-  const [transport, setTransport] = React.useState<TransportType>(data);
+  const { travel, updateTravel } = React.useContext(TravelContext);
+
+  const [depDate, setDepDate] = React.useState<Date>(
+    travel.transports[index].depDate
+  );
+  const [depHour, setDepHour] = React.useState<Date>(
+    travel.transports[index].depHour
+  );
+  const [arrDate, setArrDate] = React.useState<Date>(
+    travel.transports[index].arrDate
+  );
+  const [arrHour, setArrHour] = React.useState<Date>(
+    travel.transports[index].arrHour
+  );
+
+  const transports = travel.transports;
+  const transport = transports[index];
 
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTransport({ ...transport, [name]: event.target.value });
+    const newTransport: TransportType = {
+      ...transport,
+      [name]: event.target.value
+    };
+
+    transports[index] = newTransport;
+
+    updateTravel({ ...travel, transports: transports });
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Box m={2} className={classes.stepContainer}>
-        <Typography className={classes.typoStep}>Etape {step}</Typography>
+      <Paper key={index} className={classes.paper}>
+        <Typography className={classes.typoStep}>Transport</Typography>
         <IconButton
           aria-label="delete"
           className={classes.delButton}
           size="small"
-          onClick={() => {
-            // setTransports(transports.filter(t => t.index === idx))
-            return;
-          }}
+          onClick={handleDelete}
         >
           <DeleteIcon />
         </IconButton>
@@ -177,9 +199,14 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 autoOk
                 helperText="Date de départ"
                 placeholder="jj/mm/aaaa"
-                value={transport.depDate}
-                onChange={date => setTransport({ ...transport, depDate: date })}
-                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                value={depDate}
+                onChange={date => {
+                  setDepDate(date as Date);
+                  handleChange("depDate");
+                }}
+                InputProps={{
+                  className: classes.dateAndTimePickerButtonInput
+                }}
                 KeyboardButtonProps={{
                   className: classes.dateAndTimePickerButton
                 }}
@@ -196,9 +223,14 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 ampm={false}
                 helperText="Heure de départ"
                 placeholder="hh:mm"
-                value={transport.depHour}
-                onChange={date => setTransport({ ...transport, depHour: date })}
-                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                value={depHour}
+                onChange={date => {
+                  setDepHour(date as Date);
+                  handleChange("depHour");
+                }}
+                InputProps={{
+                  className: classes.dateAndTimePickerButtonInput
+                }}
                 KeyboardButtonProps={{
                   className: classes.dateAndTimePickerButton
                 }}
@@ -246,10 +278,15 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 autoOk
                 helperText="Date d'arrivée"
                 placeholder="jj/mm/aaaa"
-                value={transport.arrDate}
-                onChange={date => setTransport({ ...transport, arrDate: date })}
+                value={arrDate}
+                onChange={date => {
+                  setArrDate(date as Date);
+                  handleChange("arrDate");
+                }}
                 InputAdornmentProps={{ position: "end" }}
-                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                InputProps={{
+                  className: classes.dateAndTimePickerButtonInput
+                }}
                 KeyboardButtonProps={{
                   className: classes.dateAndTimePickerButton
                 }}
@@ -265,10 +302,15 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
                 ampm={false}
                 helperText="Heure d'arrivée"
                 placeholder="hh:mm"
-                value={transport.arrHour}
-                onChange={date => setTransport({ ...transport, arrHour: date })}
+                value={arrHour}
+                onChange={date => {
+                  setArrHour(date as Date);
+                  handleChange("arrHour");
+                }}
                 InputAdornmentProps={{ position: "end" }}
-                InputProps={{ className: classes.dateAndTimePickerButtonInput }}
+                InputProps={{
+                  className: classes.dateAndTimePickerButtonInput
+                }}
                 KeyboardButtonProps={{
                   className: classes.dateAndTimePickerButton
                 }}
@@ -277,38 +319,8 @@ const Transport: React.FC<{ data: TransportType; step: number }> = ({
             </Grid>
           </Grid>
         </form>
-      </Box>
+      </Paper>
     </MuiPickersUtilsProvider>
-  );
-};
-
-const TravelTransportForm: React.FC = () => {
-  const classes = useStyles();
-  const [transports, setTransports] = React.useState<State>(initialState);
-
-  let counter = 1;
-
-  return (
-    <Box className={classes.root}>
-      <Box>
-        {transports.map((transport, idx) => (
-          <Paper key={idx} className={classes.paper}>
-            <Transport data={transport} step={counter++} />
-          </Paper>
-        ))}
-      </Box>
-
-      <Fab
-        color="primary"
-        aria-label="add"
-        variant="extended"
-        className={classes.fab}
-        onClick={() => setTransports([...transports, defaultTransport])}
-      >
-        Ajouter une étape
-        <AddIcon className={classes.extendedIcon} />
-      </Fab>
-    </Box>
   );
 };
 
@@ -320,21 +332,17 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       alignItems: "center"
     },
-    stepContainer: {
-      position: "relative"
-    },
     paper: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      margin: theme.spacing(2)
+      position: "relative",
+      margin: theme.spacing(2),
+      padding: theme.spacing(1, 2)
     },
     form: {
       display: "flex",
       flexWrap: "wrap"
     },
     typoStep: {
-      marginBottom: theme.spacing(2)
+      margin: theme.spacing(0.5, 1, 1, 0.25)
     },
     menu: {
       width: 200
@@ -371,8 +379,8 @@ const useStyles = makeStyles((theme: Theme) =>
       // marginRight: theme.spacing(1),
       height: "min-content",
       position: "absolute",
-      top: theme.spacing(-0.5),
-      right: 0
+      top: theme.spacing(1),
+      right: theme.spacing(1)
     },
     extendedIcon: {
       marginLeft: theme.spacing(1)
