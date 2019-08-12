@@ -56,15 +56,16 @@ export const defaultAccommodation: AccommodationType = {
 
 const TravelAccommodationForm: React.FC<{
   index: number;
-}> = ({ index }) => {
+  handleDelete: () => void;
+}> = ({ index, handleDelete }) => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
   const [arrDate, setArrDate] = React.useState<Date>(
-    travel.transports[index].arrDate
+    travel.accommodations[index].arrDate
   );
   const [depDate, setDepDate] = React.useState<Date>(
-    travel.transports[index].depDate
+    travel.accommodations[index].depDate
   );
 
   const accommodations = travel.accommodations;
@@ -79,7 +80,6 @@ const TravelAccommodationForm: React.FC<{
     };
 
     accommodations[index] = newAccommodation;
-
     updateTravel({ ...travel, accommodations: accommodations });
   };
 
@@ -91,6 +91,7 @@ const TravelAccommodationForm: React.FC<{
           aria-label="delete"
           className={classes.delButton}
           size="small"
+          onClick={handleDelete}
         >
           <DeleteIcon />
         </IconButton>

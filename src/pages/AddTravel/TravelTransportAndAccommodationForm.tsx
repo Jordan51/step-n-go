@@ -53,16 +53,12 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
   };
 
   const addDefaultAccommodation = () => {
-    // const newAccommodation: AccommodationsType = travel.accommodations;
-    // newAccommodation.push(defaultAccommodation);
-    // const newTAA: TAAType[] = TAA;
-    // newTAA.push({
-    //   type: "accommodation",
-    //   data: defaultAccommodation,
-    //   date: defaultAccommodation.arrDate
-    // });
-    // setTAA(newTAA);
-    // updateTravel({ ...travel, accommodations: newAccommodation });
+    const newAccommodations: AccommodationsType = [
+      ...travel.accommodations,
+      { ...defaultAccommodation, id: generateID("transportID") }
+    ];
+
+    updateTravel({ ...travel, accommodations: newAccommodations });
   };
 
   function deleteTransport(id: string) {
@@ -70,10 +66,13 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     updateTravel({ ...travel, transports: newTransports });
   }
 
+  function deleteAccommodation(id: string) {
+    const newAccommodations = travel.accommodations.filter(a => a.id !== id);
+    updateTravel({ ...travel, accommodations: newAccommodations });
+  }
+
   let transportCounter = 0;
   let accommodationCounter = 0;
-
-  console.log("\nReload\n\n");
 
   return (
     <Box className={classes.root}>
@@ -93,6 +92,7 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
                 <TravelAccommodationForm
                   key={idx}
                   index={accommodationCounter++}
+                  handleDelete={() => deleteAccommodation(e.id)}
                 />
               );
             default:
