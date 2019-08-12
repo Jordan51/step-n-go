@@ -45,7 +45,7 @@ export const defaultTravel: TravelType = {
   departure: defaultDepartureAndDestination,
   destination: defaultDepartureAndDestination,
   transports: [defaultTransport],
-  accommodations: [defaultAccommodation],
+  accommodations: [],
   activities: null
 };
 

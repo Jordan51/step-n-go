@@ -60,10 +60,10 @@ const AddTravel: React.FC = () => {
     setTravel(newTravel);
   };
 
-  const transportProviderValue = React.useMemo(
-    () => ({ travel, updateTravel }),
-    [travel, updateTravel]
-  );
+  const travelProviderValue = React.useMemo(() => ({ travel, updateTravel }), [
+    travel,
+    updateTravel
+  ]);
 
   function completedSteps() {
     return Object.keys(completed).length;
@@ -109,7 +109,7 @@ const AddTravel: React.FC = () => {
   }
 
   return (
-    <TravelContext.Provider value={transportProviderValue}>
+    <TravelContext.Provider value={travelProviderValue}>
       <div className={classes.root}>
         <Stepper nonLinear activeStep={activeStep}>
           {steps.map((label, index) => (

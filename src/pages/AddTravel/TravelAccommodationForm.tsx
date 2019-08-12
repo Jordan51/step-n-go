@@ -6,10 +6,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -17,11 +15,9 @@ import Typography from "@material-ui/core/Typography";
 
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
-import AlarmIcon from "@material-ui/icons/Alarm";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 // TODO: Add controll so it is not possible to leave before you arrive!
@@ -31,6 +27,7 @@ type AccommodationNames = "Camping" | "Hotel" | "";
 const accommodationTypes: AccommodationNames[] = ["Camping", "Hotel"];
 
 export type AccommodationType = {
+  type: "accommodation";
   id: string;
   accommodation: AccommodationNames | "";
   location: string;
@@ -44,6 +41,7 @@ export type AccommodationType = {
 };
 
 export const defaultAccommodation: AccommodationType = {
+  type: "accommodation",
   id: generateID("acdID"),
   accommodation: "",
   location: "",

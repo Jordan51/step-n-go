@@ -6,10 +6,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import Fab from "@material-ui/core/Fab";
 import IconButton from "@material-ui/core/IconButton";
 import Paper from "@material-ui/core/Paper";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -45,6 +43,7 @@ const transportModes: TransportTypes[] = [
 ];
 
 export type TransportType = {
+  type: "transport";
   id: string;
   depLocation: string;
   depDate: Date;
@@ -61,6 +60,7 @@ export type TransportType = {
 };
 
 export const defaultTransport: TransportType = {
+  type: "transport",
   id: generateID("transportID"),
   depLocation: "",
   depDate: new Date(),
@@ -75,10 +75,6 @@ export const defaultTransport: TransportType = {
   nbPers: 1,
   commentary: ""
 };
-
-type State = Array<TransportType>;
-
-const initialState: State = [defaultTransport];
 
 const locationExamples = [
   "Aéroport Paris Charles De Gaulle (Paris)",
@@ -128,14 +124,15 @@ const TravelTransportForm: React.FC<{
     };
 
     transports[index] = newTransport;
-
     updateTravel({ ...travel, transports: transports });
   };
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Paper key={index} className={classes.paper}>
-        <Typography className={classes.typoStep}>Transport</Typography>
+        <Typography className={classes.typoStep}>
+          Transport ({transport.id})
+        </Typography>
         <IconButton
           aria-label="delete"
           className={classes.delButton}
