@@ -29,7 +29,6 @@ const TravelDepartureAndDestinationForm: React.FC = () => {
       direction="row"
       justify="center"
       alignItems="center"
-      spacing={3}
       className={classes.root}
     >
       <Grid item xs={12} sm={10} md={5}>

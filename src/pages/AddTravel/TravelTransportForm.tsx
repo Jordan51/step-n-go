@@ -26,6 +26,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 
 type TransportTypes =
   | "Avion"
+  | "Bateau"
   | "Bus"
   | "Métro"
   | "Taxi"
@@ -35,6 +36,7 @@ type TransportTypes =
 
 const transportModes: TransportTypes[] = [
   "Avion",
+  "Bateau",
   "Bus",
   "Métro",
   "Taxi",
@@ -93,27 +95,22 @@ const randomLocationExample =
   locationExamples[Math.floor(Math.random() * locationExamples.length)];
 
 const TravelTransportForm: React.FC<{
-  index: number;
+  id: string;
   handleDelete: () => void;
-}> = ({ index, handleDelete }) => {
+}> = ({ id, handleDelete }) => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
-  const [depDate, setDepDate] = React.useState<Date>(
-    travel.transports[index].depDate
-  );
-  const [depHour, setDepHour] = React.useState<Date>(
-    travel.transports[index].depHour
-  );
-  const [arrDate, setArrDate] = React.useState<Date>(
-    travel.transports[index].arrDate
-  );
-  const [arrHour, setArrHour] = React.useState<Date>(
-    travel.transports[index].arrHour
-  );
-
   const transports = travel.transports;
+  const index = transports.findIndex(t => t.id === id);
   const transport = transports[index];
+
+  const [depDate, setDepDate] = React.useState<Date>(transport.depDate);
+  const [depHour, setDepHour] = React.useState<Date>(transport.depHour);
+  const [arrDate, setArrDate] = React.useState<Date>(transport.arrDate);
+  const [arrHour, setArrHour] = React.useState<Date>(transport.arrHour);
+
+  // const transport = transports[index];
 
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -129,7 +126,7 @@ const TravelTransportForm: React.FC<{
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Paper key={index} className={classes.paper}>
+      <Paper className={classes.paper}>
         <Typography className={classes.typoStep}>
           Transport ({transport.id})
         </Typography>
@@ -199,7 +196,12 @@ const TravelTransportForm: React.FC<{
                 value={depDate}
                 onChange={date => {
                   setDepDate(date as Date);
-                  handleChange("depDate");
+                  const newTransport: TransportType = {
+                    ...transport,
+                    depDate: date as Date
+                  };
+                  transports[index] = newTransport;
+                  updateTravel({ ...travel, transports: transports });
                 }}
                 InputProps={{
                   className: classes.dateAndTimePickerButtonInput
@@ -223,7 +225,12 @@ const TravelTransportForm: React.FC<{
                 value={depHour}
                 onChange={date => {
                   setDepHour(date as Date);
-                  handleChange("depHour");
+                  const newTransport: TransportType = {
+                    ...transport,
+                    depHour: date as Date
+                  };
+                  transports[index] = newTransport;
+                  updateTravel({ ...travel, transports: transports });
                 }}
                 InputProps={{
                   className: classes.dateAndTimePickerButtonInput
@@ -278,7 +285,12 @@ const TravelTransportForm: React.FC<{
                 value={arrDate}
                 onChange={date => {
                   setArrDate(date as Date);
-                  handleChange("arrDate");
+                  const newTransport: TransportType = {
+                    ...transport,
+                    arrDate: date as Date
+                  };
+                  transports[index] = newTransport;
+                  updateTravel({ ...travel, transports: transports });
                 }}
                 InputAdornmentProps={{ position: "end" }}
                 InputProps={{
@@ -302,7 +314,12 @@ const TravelTransportForm: React.FC<{
                 value={arrHour}
                 onChange={date => {
                   setArrHour(date as Date);
-                  handleChange("arrHour");
+                  const newTransport: TransportType = {
+                    ...transport,
+                    arrHour: date as Date
+                  };
+                  transports[index] = newTransport;
+                  updateTravel({ ...travel, transports: transports });
                 }}
                 InputAdornmentProps={{ position: "end" }}
                 InputProps={{

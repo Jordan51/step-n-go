@@ -55,21 +55,18 @@ export const defaultAccommodation: AccommodationType = {
 };
 
 const TravelAccommodationForm: React.FC<{
-  index: number;
+  id: string;
   handleDelete: () => void;
-}> = ({ index, handleDelete }) => {
+}> = ({ id, handleDelete }) => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
-  const [arrDate, setArrDate] = React.useState<Date>(
-    travel.accommodations[index].arrDate
-  );
-  const [depDate, setDepDate] = React.useState<Date>(
-    travel.accommodations[index].depDate
-  );
-
   const accommodations = travel.accommodations;
+  const index = accommodations.findIndex(a => a.id === id);
   const accommodation = accommodations[index];
+
+  const [depDate, setDepDate] = React.useState<Date>(accommodation.depDate);
+  const [arrDate, setArrDate] = React.useState<Date>(accommodation.arrDate);
 
   const handleChange = (name: keyof AccommodationType) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -85,8 +82,10 @@ const TravelAccommodationForm: React.FC<{
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Paper key={index} className={classes.paper}>
-        <Typography className={classes.typoStep}>Hébergement</Typography>
+      <Paper key={id} className={classes.paper}>
+        <Typography className={classes.typoStep}>
+          Hébergement ({accommodation.id})
+        </Typography>
         <IconButton
           aria-label="delete"
           className={classes.delButton}
@@ -155,7 +154,12 @@ const TravelAccommodationForm: React.FC<{
                 value={arrDate}
                 onChange={date => {
                   setArrDate(date as Date);
-                  handleChange("arrDate");
+                  const newAccommodation: AccommodationType = {
+                    ...accommodation,
+                    arrDate: date as Date
+                  };
+                  accommodations[index] = newAccommodation;
+                  updateTravel({ ...travel, accommodations: accommodations });
                 }}
                 InputAdornmentProps={{ position: "end" }}
                 InputProps={{
@@ -183,7 +187,12 @@ const TravelAccommodationForm: React.FC<{
                 value={depDate}
                 onChange={date => {
                   setDepDate(date as Date);
-                  handleChange("depDate");
+                  const newAccommodation: AccommodationType = {
+                    ...accommodation,
+                    depDate: date as Date
+                  };
+                  accommodations[index] = newAccommodation;
+                  updateTravel({ ...travel, accommodations: accommodations });
                 }}
                 InputProps={{
                   className: classes.dateAndTimePickerButtonInput

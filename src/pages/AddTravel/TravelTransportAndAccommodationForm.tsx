@@ -16,50 +16,49 @@ import Fab from "@material-ui/core/Fab";
 
 import AddIcon from "@material-ui/icons/Add";
 
-// TODO: Deleting step button
-// TODO: Sorting the steps according to the transport's departure dates and accommodation's arrival dates
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
 export type TransportsType = TransportType[];
 export type AccommodationsType = AccommodationType[];
 
-// type TransportsAndAccommodationsType = TransportsType & AccommodationsType;
+function sortEventsByDates(
+  events: Array<TransportType | AccommodationType>
+): Array<TransportType | AccommodationType> {
+  const newValues = events.sort((a, b) => {
+    const date1 = a.type === "transport" ? a.depDate : a.arrDate;
+    const date2 = b.type === "transport" ? b.depDate : b.arrDate;
+    // console.log("Date1:", date1 + "\n" + "Date2:", date2);
+    return new Date(date1).getTime() - new Date(date2).getTime();
+  });
 
-// type TAAType = {
-//   type: "transport" | "accommodation";
-//   data: TransportType | AccommodationType;
-//   date: Date;
-// };
+  return newValues;
+}
 
 const TravelTransportAndAccommodationForm: React.FC = () => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
-  const TAA: Array<TransportType | AccommodationType> = [
+  const TAA: Array<TransportType | AccommodationType> = sortEventsByDates([
     ...travel.transports,
     ...travel.accommodations
-  ];
+  ]);
 
-  // TAA.sort((a, b) => {
-  //   return a.date.getDate() - b.date.getDate();
-  // });
-
-  const addDefaultTransport = () => {
+  function addDefaultTransport() {
     const newTransports: TransportsType = [
       ...travel.transports,
       { ...defaultTransport, id: generateID("transportID") }
     ];
 
     updateTravel({ ...travel, transports: newTransports });
-  };
+  }
 
-  const addDefaultAccommodation = () => {
+  function addDefaultAccommodation() {
     const newAccommodations: AccommodationsType = [
       ...travel.accommodations,
-      { ...defaultAccommodation, id: generateID("transportID") }
+      { ...defaultAccommodation, id: generateID("acdID") }
     ];
 
     updateTravel({ ...travel, accommodations: newAccommodations });
-  };
+  }
 
   function deleteTransport(id: string) {
     const newTransports = travel.transports.filter(t => t.id !== id);
@@ -71,33 +70,23 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     updateTravel({ ...travel, accommodations: newAccommodations });
   }
 
-  let transportCounter = 0;
-  let accommodationCounter = 0;
-
   return (
     <Box className={classes.root}>
       <Box>
-        {TAA.map((e, idx) => {
-          switch (e.type) {
-            case "transport":
-              return (
-                <TravelTransportForm
-                  key={idx}
-                  index={transportCounter++}
-                  handleDelete={() => deleteTransport(e.id)}
-                />
-              );
-            case "accommodation":
-              return (
-                <TravelAccommodationForm
-                  key={idx}
-                  index={accommodationCounter++}
-                  handleDelete={() => deleteAccommodation(e.id)}
-                />
-              );
-            default:
-              return;
-          }
+        {TAA.map(e => {
+          return e.type === "transport" ? (
+            <TravelTransportForm
+              key={e.id}
+              id={e.id}
+              handleDelete={() => deleteTransport(e.id)}
+            />
+          ) : (
+            <TravelAccommodationForm
+              key={e.id}
+              id={e.id}
+              handleDelete={() => deleteAccommodation(e.id)}
+            />
+          );
         })}
       </Box>
 
