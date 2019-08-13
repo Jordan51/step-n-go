@@ -15,6 +15,8 @@ import Box from "@material-ui/core/Box";
 import Fab from "@material-ui/core/Fab";
 
 import AddIcon from "@material-ui/icons/Add";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
@@ -111,7 +113,9 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
 
   return (
     <Box className={classes.root}>
-      <Box>
+      <Typography variant="h6">Transport et hébergement</Typography>
+      <Divider />
+      <Box marginTop={"-8px"} minHeight={16}>
         {TAA.map(e => {
           return e.type === "transport" ? (
             <TravelTransportForm
@@ -129,7 +133,7 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
         })}
       </Box>
 
-      <Box display="flex">
+      <Box display="flex" flexWrap="wrap" justifyContent="center">
         <Fab
           color="primary"
           aria-label="add"
@@ -159,12 +163,7 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "column",
-      alignItems: "center"
-    },
+    root: {},
     stepContainer: {
       position: "relative"
     },

@@ -6,7 +6,6 @@ import TravelCategoryForm from "./TravelCategoryForm";
 import TravelDepartureAndDestinationForm from "./TravelDepartureAndDestinationForm";
 import TravelTransportAndHousingForm from "./TravelTransportAndAccommodationForm";
 import TravelActivitiesForm from "./TravelActivitiesForm";
-import TravelRecap from "./TravelRecap";
 import { TravelContext, defaultTravel, TravelType } from "./TravelContext";
 import { DisplayResolution } from "../../components/DisplayResolution";
 
@@ -18,6 +17,8 @@ import StepButton from "@material-ui/core/StepButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import Hidden from "@material-ui/core/Hidden";
 
 const steps = [
   "Nom du voyage",
@@ -60,7 +61,7 @@ const useStateWithLocalStorage = (
 
   React.useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(value));
-  }, [value]);
+  }, [localStorageKey, value]);
 
   return [value, setValue];
 };
@@ -77,7 +78,7 @@ const AddTravel: React.FC = () => {
     () => (newTravel: TravelType) => {
       setTravel(newTravel);
     },
-    [travel]
+    [setTravel]
   );
 
   const travelProviderValue = React.useMemo(() => ({ travel, updateTravel }), [
@@ -131,14 +132,14 @@ const AddTravel: React.FC = () => {
   return (
     <TravelContext.Provider value={travelProviderValue}>
       <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep}>
+        <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
           {steps.map((label, index) => (
             <Step key={label}>
               <StepButton
                 onClick={handleStep(index)}
                 completed={completed[index]}
               >
-                {label}
+                <Hidden xsDown>{label}</Hidden>
               </StepButton>
             </Step>
           ))}
@@ -153,9 +154,9 @@ const AddTravel: React.FC = () => {
             </>
           ) : (
             <>
-              <Box m={2} className={classes.stepContainer}>
+              <Container className={classes.stepContainer}>
                 {getStepContent(activeStep)}
-              </Box>
+              </Container>
               <Box className={classes.actionsButtonsContainer}>
                 <Button
                   disabled={activeStep === 0}
@@ -191,8 +192,6 @@ const AddTravel: React.FC = () => {
                   </>
                 ))} */}
               </Box>
-
-              <TravelRecap />
             </>
           )}
         </>
@@ -207,6 +206,12 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       width: "100%"
     },
+    stepper: {
+      marginBottom: theme.spacing(4),
+      [theme.breakpoints.down("sm")]: {
+        marginBottom: theme.spacing(2)
+      }
+    },
     button: {
       marginTop: theme.spacing(2),
       marginRight: theme.spacing(1)
@@ -219,19 +224,21 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1)
     },
     stepContainer: {
-      minHeight: "200px",
-      maxWidth: 1200,
-      marginRight: "auto",
-      marginLeft: "auto",
+      [theme.breakpoints.up("sm")]: {
+        minHeight: "300px"
+      },
       display: "flex",
       flexDirection: "row",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
+      marginBottom: theme.spacing(4)
     },
     actionsButtonsContainer: {
       display: "flex",
       flexDirection: "row",
-      justifyContent: "center"
+      justifyContent: "center",
+      marginTop: theme.spacing(-2),
+      marginBottom: theme.spacing(4)
     }
   })
 );

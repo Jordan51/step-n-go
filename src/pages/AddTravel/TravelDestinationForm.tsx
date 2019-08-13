@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { DepartureAndDestinationType } from "./TravelDepartureAndDestinationForm";
 import { TravelContext } from "./TravelContext";
+import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 
 const TravelDestinationForm: React.FC = () => {
   const classes = useStyles();
@@ -24,62 +26,69 @@ const TravelDestinationForm: React.FC = () => {
   };
 
   return (
-    <Box m={2}>
-      <Typography variant="h5">Destination</Typography>
-      <form className={classes.container} noValidate autoComplete="off">
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={3}
-        >
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="travel-destination-country"
-              label="Pays"
-              className={classes.textField}
-              value={travel.destination.country}
-              onChange={handleChange("country")}
-              margin="normal"
-            />
+    <Box className={classes.root}>
+      <Typography variant="h6">Destination</Typography>
+      <Divider />
+      <Paper className={classes.paper}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={3}
+          >
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id="travel-destination-country"
+                label="Pays"
+                className={classes.textField}
+                value={travel.destination.country}
+                onChange={handleChange("country")}
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id="travel-destination-city"
+                label="Ville"
+                className={classes.textField}
+                value={travel.destination.city}
+                onChange={handleChange("city")}
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="travel-destination-address"
+                label="Adresse"
+                className={classes.textField}
+                value={travel.destination.address}
+                onChange={handleChange("address")}
+                margin="normal"
+              />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <TextField
-              id="travel-destination-city"
-              label="Ville"
-              className={classes.textField}
-              value={travel.destination.city}
-              onChange={handleChange("city")}
-              margin="normal"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              id="travel-destination-address"
-              label="Adresse"
-              className={classes.textField}
-              value={travel.destination.address}
-              onChange={handleChange("address")}
-              margin="normal"
-            />
-          </Grid>
-        </Grid>
-      </form>
+        </form>
+      </Paper>
     </Box>
   );
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    root: {},
+    paper: {
+      padding: theme.spacing(1, 2, 2),
+      marginTop: theme.spacing(1)
+    },
     container: {
       display: "flex",
       flexWrap: "wrap"
     },
     textField: {
-      width: "100%"
-      // marginLeft: theme.spacing(1),
-      // marginRight: theme.spacing(1)
+      width: "100%",
+      margin: 0
     }
   })
 );

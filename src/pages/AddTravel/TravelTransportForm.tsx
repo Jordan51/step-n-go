@@ -336,15 +336,9 @@ const TravelTransportForm: React.FC<{
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "column",
-      alignItems: "center"
-    },
     paper: {
       position: "relative",
-      margin: theme.spacing(2),
+      margin: theme.spacing(2, 0),
       padding: theme.spacing(1, 2)
     },
     form: {

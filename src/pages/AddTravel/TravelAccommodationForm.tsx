@@ -96,7 +96,7 @@ const TravelAccommodationForm: React.FC<{
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Paper key={id} className={classes.paper}>
+      <Paper className={classes.paper}>
         <Typography className={classes.typoStep}>
           Hébergement ({accommodation.id})
         </Typography>
@@ -211,15 +211,9 @@ const TravelAccommodationForm: React.FC<{
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-      flexDirection: "column",
-      alignItems: "center"
-    },
     paper: {
       position: "relative",
-      margin: theme.spacing(2),
+      margin: theme.spacing(2, 0),
       padding: theme.spacing(1, 2)
     },
     form: {

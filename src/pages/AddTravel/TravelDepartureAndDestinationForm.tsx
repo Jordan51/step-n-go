@@ -29,13 +29,13 @@ const TravelDepartureAndDestinationForm: React.FC = () => {
       direction="row"
       justify="center"
       alignItems="center"
-      className={classes.root}
+      spacing={2}
     >
       <Grid item xs={12} sm={10} md={5}>
         <TravelDepartureForm />
       </Grid>
       <Hidden smDown>
-        <ArrowRight />
+        <ArrowRight style={{ marginTop: 48 }} />
       </Hidden>
       <Grid item xs={12} sm={10} md={5}>
         <TravelDestinationForm />
