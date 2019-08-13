@@ -110,9 +110,6 @@ const TravelTransportForm: React.FC<{
   const [arrDate, setArrDate] = React.useState<Date>(transport.arrDate);
   const [arrHour, setArrHour] = React.useState<Date>(transport.arrHour);
 
-  if (arrDate < depDate) setArrDate(depDate);
-  if (arrHour < depHour) setArrHour(depHour);
-
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -124,6 +121,24 @@ const TravelTransportForm: React.FC<{
     transports[index] = newTransport;
     updateTravel({ ...travel, transports: transports });
   };
+
+  const updateDate = (name: keyof TransportType, date: Date) => {
+    const newTransport: TransportType = {
+      ...transport,
+      [name]: date as Date
+    };
+    transports[index] = newTransport;
+    updateTravel({ ...travel, transports: transports });
+  };
+
+  if (arrDate < depDate) {
+    setArrDate(depDate);
+    updateDate("arrDate", depDate);
+  }
+  if (arrHour < depHour) {
+    setArrHour(depHour);
+    updateDate("arrHour", depHour);
+  }
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -197,12 +212,7 @@ const TravelTransportForm: React.FC<{
                 value={depDate}
                 onChange={date => {
                   setDepDate(date as Date);
-                  const newTransport: TransportType = {
-                    ...transport,
-                    depDate: date as Date
-                  };
-                  transports[index] = newTransport;
-                  updateTravel({ ...travel, transports: transports });
+                  updateDate("depDate", date as Date);
                 }}
                 InputProps={{
                   className: classes.dateAndTimePickerButtonInput
@@ -226,12 +236,7 @@ const TravelTransportForm: React.FC<{
                 value={depHour}
                 onChange={date => {
                   setDepHour(date as Date);
-                  const newTransport: TransportType = {
-                    ...transport,
-                    depHour: date as Date
-                  };
-                  transports[index] = newTransport;
-                  updateTravel({ ...travel, transports: transports });
+                  updateDate("depHour", date as Date);
                 }}
                 InputProps={{
                   className: classes.dateAndTimePickerButtonInput
@@ -286,12 +291,7 @@ const TravelTransportForm: React.FC<{
                 value={arrDate}
                 onChange={date => {
                   setArrDate(date as Date);
-                  const newTransport: TransportType = {
-                    ...transport,
-                    arrDate: date as Date
-                  };
-                  transports[index] = newTransport;
-                  updateTravel({ ...travel, transports: transports });
+                  updateDate("arrDate", date as Date);
                 }}
                 InputAdornmentProps={{ position: "end" }}
                 InputProps={{
@@ -315,12 +315,7 @@ const TravelTransportForm: React.FC<{
                 value={arrHour}
                 onChange={date => {
                   setArrHour(date as Date);
-                  const newTransport: TransportType = {
-                    ...transport,
-                    arrHour: date as Date
-                  };
-                  transports[index] = newTransport;
-                  updateTravel({ ...travel, transports: transports });
+                  updateDate("arrDate", date as Date);
                 }}
                 InputAdornmentProps={{ position: "end" }}
                 InputProps={{

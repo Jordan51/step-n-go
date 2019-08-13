@@ -46,23 +46,23 @@ const TravelRecap: React.FC = () => {
 
             {/* DEPARTURE */}
             <ListItem className={classes.listItem}>
-              <p>
+              {/* <p>
                 {travel.departure.address}, {travel.departure.city},{" "}
                 {travel.departure.country}
-              </p>
+              </p> */}
             </ListItem>
 
             {/* DESTINATION */}
             <ListItem className={classes.listItem}>
-              <p>
+              {/* <p>
                 {travel.destination.address}, {travel.destination.city} ,
                 {travel.destination.country}
-              </p>
+              </p> */}
             </ListItem>
 
             {/* TRANSPORT(S) */}
             <ListItem className={classes.listItem}>
-              <ul style={{ paddingLeft: 16 }}>
+              {/* <ul style={{ paddingLeft: 16 }}>
                 {travel.transports.map((t, idx) => (
                   <li key={idx}>
                     {t.mode} ({t.ref}) <br /> Départ de {t.depLocation} <br />
@@ -72,12 +72,12 @@ const TravelRecap: React.FC = () => {
                     le {dateToString(t.arrDate)} à {timeToString(t.arrHour)}
                   </li>
                 ))}
-              </ul>
+              </ul> */}
             </ListItem>
 
             {/* ACCOMMODATION(S) */}
             <ListItem className={classes.listItem}>
-              <ul style={{ paddingLeft: 16 }}>
+              {/* <ul style={{ paddingLeft: 16 }}>
                 {travel.accommodations.map((a, idx) => (
                   <li key={idx}>
                     {a.accommodation}, {a.location} <br /> Arrivé le{" "}
@@ -85,7 +85,7 @@ const TravelRecap: React.FC = () => {
                     Départ le {dateToString(a.depDate)}
                   </li>
                 ))}
-              </ul>
+              </ul> */}
             </ListItem>
 
             {/* ACTIVITIES */}

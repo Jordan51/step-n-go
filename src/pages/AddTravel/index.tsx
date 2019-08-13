@@ -8,6 +8,7 @@ import TravelTransportAndHousingForm from "./TravelTransportAndAccommodationForm
 import TravelActivitiesForm from "./TravelActivitiesForm";
 import TravelRecap from "./TravelRecap";
 import { TravelContext, defaultTravel, TravelType } from "./TravelContext";
+import { DisplayResolution } from "../../components/DisplayResolution";
 
 // Material-ui
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
@@ -17,7 +18,6 @@ import StepButton from "@material-ui/core/StepButton";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { DisplayResolution } from "../../components/DisplayResolution";
 
 const steps = [
   "Nom du voyage",
@@ -48,17 +48,37 @@ function getStepContent(step: number) {
   }
 }
 
+const useStateWithLocalStorage = (
+  localStorageKey: string,
+  defaultValue: {}
+) => {
+  const [value, setValue] = React.useState<any>(
+    !!localStorage.getItem(localStorageKey)
+      ? JSON.parse(localStorage.getItem(localStorageKey) as string)
+      : defaultValue
+  );
+
+  React.useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(value));
+  }, [value]);
+
+  return [value, setValue];
+};
+
 const AddTravel: React.FC = () => {
   const classes = useStyles();
-  const [travel, setTravel] = React.useState(defaultTravel);
+  const [travel, setTravel] = useStateWithLocalStorage("travel", defaultTravel);
   const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
   );
 
-  const updateTravel = (newTravel: TravelType) => {
-    setTravel(newTravel);
-  };
+  const updateTravel = React.useMemo(
+    () => (newTravel: TravelType) => {
+      setTravel(newTravel);
+    },
+    [travel]
+  );
 
   const travelProviderValue = React.useMemo(() => ({ travel, updateTravel }), [
     travel,

@@ -28,8 +28,8 @@ function sortEventsByDates(
     const date1 = a.type === "transport" ? a.depDate : a.arrDate;
     const date2 = b.type === "transport" ? b.depDate : b.arrDate;
 
-    const time1 = a.type === "transport" ? a.depHour : a.arrHour.setHours(23);
-    const time2 = b.type === "transport" ? b.depHour : b.arrHour.setHours(23);
+    const time1 = a.type === "transport" ? a.depHour : a.arrHour;
+    const time2 = b.type === "transport" ? b.depHour : b.arrHour;
 
     const dateDiff = new Date(date1).getTime() - new Date(date2).getTime();
     const timeDiff = new Date(time1).getTime() - new Date(time2).getTime();
@@ -49,10 +49,35 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     ...travel.accommodations
   ]);
 
+  const lastE = TAA.length > 0 ? TAA[TAA.length - 1] : null;
+  const lastDate = !!lastE
+    ? lastE.type === "transport"
+      ? lastE.depDate
+      : lastE.arrDate
+    : new Date();
+  const lastHour = !!lastE
+    ? lastE.type === "transport"
+      ? lastE.arrHour
+      : lastE.depHour
+    : new Date();
+  const lastLocation = !!lastE
+    ? lastE.type === "transport"
+      ? lastE.arrLocation
+      : lastE.location
+    : "";
+
   function addDefaultTransport() {
     const newTransports: TransportsType = [
       ...travel.transports,
-      { ...defaultTransport, id: generateID("transportID") }
+      {
+        ...defaultTransport,
+        id: generateID("transportID"),
+        depLocation: lastLocation,
+        depDate: lastDate,
+        depHour: lastHour,
+        arrDate: lastDate,
+        arrHour: lastHour
+      }
     ];
 
     updateTravel({ ...travel, transports: newTransports });
@@ -61,7 +86,14 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
   function addDefaultAccommodation() {
     const newAccommodations: AccommodationsType = [
       ...travel.accommodations,
-      { ...defaultAccommodation, id: generateID("acdID") }
+      {
+        ...defaultAccommodation,
+        id: generateID("acdID"),
+        arrDate: lastDate,
+        arrHour: lastHour,
+        depDate: lastDate,
+        depHour: lastHour
+      }
     ];
 
     updateTravel({ ...travel, accommodations: newAccommodations });
