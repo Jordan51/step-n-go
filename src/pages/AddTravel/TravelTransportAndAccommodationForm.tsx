@@ -27,8 +27,15 @@ function sortEventsByDates(
   const newValues = events.sort((a, b) => {
     const date1 = a.type === "transport" ? a.depDate : a.arrDate;
     const date2 = b.type === "transport" ? b.depDate : b.arrDate;
+
+    const time1 = a.type === "transport" ? a.depHour : a.arrHour.setHours(23);
+    const time2 = b.type === "transport" ? b.depHour : b.arrHour.setHours(23);
+
+    const dateDiff = new Date(date1).getTime() - new Date(date2).getTime();
+    const timeDiff = new Date(time1).getTime() - new Date(time2).getTime();
+
     // console.log("Date1:", date1 + "\n" + "Date2:", date2);
-    return new Date(date1).getTime() - new Date(date2).getTime();
+    return dateDiff === 0 ? timeDiff : dateDiff;
   });
 
   return newValues;
