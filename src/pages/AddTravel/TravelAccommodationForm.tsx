@@ -68,6 +68,8 @@ const TravelAccommodationForm: React.FC<{
   const [depDate, setDepDate] = React.useState<Date>(accommodation.depDate);
   const [arrDate, setArrDate] = React.useState<Date>(accommodation.arrDate);
 
+  if (depDate < arrDate) setDepDate(arrDate);
+
   const handleChange = (name: keyof AccommodationType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

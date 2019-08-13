@@ -110,7 +110,8 @@ const TravelTransportForm: React.FC<{
   const [arrDate, setArrDate] = React.useState<Date>(transport.arrDate);
   const [arrHour, setArrHour] = React.useState<Date>(transport.arrHour);
 
-  // const transport = transports[index];
+  if (arrDate < depDate) setArrDate(depDate);
+  if (arrHour < depHour) setArrHour(depHour);
 
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
