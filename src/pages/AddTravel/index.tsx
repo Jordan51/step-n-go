@@ -26,8 +26,7 @@ const steps = [
   "Nom du voyage",
   "Type de voyage",
   "Départ/Destination",
-  "Transport/Hébergement",
-  "Activités"
+  "Transport/Hébergement"
 ];
 
 function totalSteps() {
@@ -44,8 +43,6 @@ function getStepContent(step: number) {
       return <TravelDepartureAndDestinationForm />;
     case 3:
       return <TravelTransportAndHousingForm />;
-    case 4:
-      return <TravelActivitiesForm />;
     default:
       return "Unknown step";
   }
@@ -71,14 +68,12 @@ const useStateWithLocalStorage = (
 function AddTravel({ match }: { match: { params: { step: string } } }) {
   const classes = useStyles();
   const [travel, setTravel] = useStateWithLocalStorage("travel", defaultTravel);
+  const [activeStep, setActiveStep] = useStateWithLocalStorage(
+    "currentStep",
+    0
+  );
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
-  );
-  const urlStep = !!match.params.step
-    ? parseInt(match.params.step.charAt(4)) - 1
-    : 0;
-  const [activeStep, setActiveStep] = React.useState(
-    isNaN(urlStep) || urlStep < 0 || urlStep > steps.length - 1 ? 0 : urlStep
   );
 
   const updateTravel = React.useMemo(
@@ -117,7 +112,7 @@ function AddTravel({ match }: { match: { params: { step: string } } }) {
   }
 
   function handleBack() {
-    setActiveStep(prevActiveStep => prevActiveStep - 1);
+    setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
   }
 
   const handleStep = (step: number) => () => {
@@ -139,18 +134,26 @@ function AddTravel({ match }: { match: { params: { step: string } } }) {
   return (
     <TravelContext.Provider value={travelProviderValue}>
       <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepButton
-                onClick={handleStep(index)}
-                completed={completed[index]}
-              >
-                <Hidden xsDown>{label}</Hidden>
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
+        <div style={{ backgroundColor: "#fff" }}>
+          <Container>
+            <Stepper
+              nonLinear
+              activeStep={activeStep}
+              className={classes.stepper}
+            >
+              {steps.map((label, index) => (
+                <Step key={label}>
+                  <StepButton
+                    onClick={handleStep(index)}
+                    completed={completed[index]}
+                  >
+                    <Hidden xsDown>{label}</Hidden>
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
+          </Container>
+        </div>
         <>
           {allStepsCompleted() ? (
             <>
