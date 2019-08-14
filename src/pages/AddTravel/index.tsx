@@ -20,6 +20,8 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Hidden from "@material-ui/core/Hidden";
 
+export const PATH_ADD_TRAVEL = "/addTravel";
+
 const steps = [
   "Nom du voyage",
   "Type de voyage",
@@ -66,12 +68,17 @@ const useStateWithLocalStorage = (
   return [value, setValue];
 };
 
-const AddTravel: React.FC = () => {
+function AddTravel({ match }: { match: { params: { step: string } } }) {
   const classes = useStyles();
   const [travel, setTravel] = useStateWithLocalStorage("travel", defaultTravel);
-  const [activeStep, setActiveStep] = React.useState(0);
   const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
     {}
+  );
+  const urlStep = !!match.params.step
+    ? parseInt(match.params.step.charAt(4)) - 1
+    : 0;
+  const [activeStep, setActiveStep] = React.useState(
+    isNaN(urlStep) || urlStep < 0 || urlStep > steps.length - 1 ? 0 : urlStep
   );
 
   const updateTravel = React.useMemo(
@@ -199,7 +206,7 @@ const AddTravel: React.FC = () => {
       <DisplayResolution />
     </TravelContext.Provider>
   );
-};
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -163,7 +163,9 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {},
+    root: {
+      width: "100%"
+    },
     stepContainer: {
       position: "relative"
     },
