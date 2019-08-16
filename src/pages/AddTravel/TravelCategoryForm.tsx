@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TravelContext } from "./TravelContext";
+import { TravelContext } from "../Travel/TravelContext";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -12,7 +12,7 @@ import Divider from "@material-ui/core/Divider";
 // TODO: Add more categories
 // TODO: Add a filter system
 
-export type TravellingCategoryType =
+export type TravelCategoryType =
   | "Camping"
   | "Croisière"
   | "Déplacement professionnel"
@@ -21,7 +21,7 @@ export type TravellingCategoryType =
   | "Séjour linguistique"
   | "";
 
-const TravellingCategories = [
+export const TravelCategories = [
   "Camping",
   "Croisière",
   "Déplacement professionnel",
@@ -34,7 +34,7 @@ const TravelCategoryForm: React.FC = () => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
-  const handleChange = (category: TravellingCategoryType) => (
+  const handleChange = (category: TravelCategoryType) => (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     updateTravel({ ...travel, category: category });
@@ -45,11 +45,11 @@ const TravelCategoryForm: React.FC = () => {
       <Typography variant="h6">Type de voyage</Typography>
       <Divider />
       <Paper className={classes.paper}>
-        {TravellingCategories.map((category, idx) => (
+        {TravelCategories.map((category, idx) => (
           <Button
             variant={travel.category === category ? "contained" : "outlined"}
             key={idx}
-            onClick={handleChange(category as TravellingCategoryType)}
+            onClick={handleChange(category as TravelCategoryType)}
             color="primary"
             className={classes.button}
           >

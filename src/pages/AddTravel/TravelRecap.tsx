@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TravelContext } from "./TravelContext";
+import { TravelContext } from "../Travel/TravelContext";
 
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";

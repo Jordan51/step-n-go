@@ -1,19 +1,19 @@
 import React from "react";
-import { TravellingCategoryType } from "./TravelCategoryForm";
+import { TravelCategoryType } from "../AddTravel/TravelCategoryForm";
 import {
   DepartureAndDestinationType,
   defaultDepartureAndDestination
-} from "./TravelDepartureAndDestinationForm";
+} from "../AddTravel/TravelDepartureAndDestinationForm";
 import {
   TransportsType,
   AccommodationsType
-} from "./TravelTransportAndAccommodationForm";
-import { defaultTransport } from "./TravelTransportForm";
+} from "../AddTravel/TravelTransportAndAccommodationForm";
+import { defaultTransport } from "../AddTravel/TravelTransportForm";
 
 export type TravelType = {
   id: string;
   name: string;
-  category: TravellingCategoryType;
+  category: TravelCategoryType;
   departure: DepartureAndDestinationType;
   destination: DepartureAndDestinationType;
   transports: TransportsType;

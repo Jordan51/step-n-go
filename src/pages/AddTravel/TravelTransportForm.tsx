@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TravelContext, generateID } from "./TravelContext";
+import { TravelContext, generateID } from "../Travel/TravelContext";
 
 import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";

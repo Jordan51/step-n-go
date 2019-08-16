@@ -5,10 +5,9 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { DepartureAndDestinationType } from "./TravelDepartureAndDestinationForm";
-import { TravelContext } from "./TravelContext";
+import { TravelContext } from "../Travel/TravelContext";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
-import { spacing } from "@material-ui/system";
 import Divider from "@material-ui/core/Divider";
 
 const TravelDepartureForm: React.FC = () => {
@@ -80,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     paper: {
-      padding: theme.spacing(1, 2, 2),
+      padding: theme.spacing(1.5, 2, 2),
       marginTop: theme.spacing(1)
     },
     container: {

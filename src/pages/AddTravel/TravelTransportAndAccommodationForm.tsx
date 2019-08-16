@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TravelContext, generateID } from "./TravelContext";
+import { TravelContext, generateID } from "../Travel/TravelContext";
 import TravelTransportForm, {
   TransportType,
   defaultTransport
@@ -17,6 +17,7 @@ import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
+import { areStringsValid, isStringValid } from "../../scripts/inputTests";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
@@ -50,6 +51,10 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     ...travel.transports,
     ...travel.accommodations
   ]);
+
+  const lastTransport = travel.transports[travel.transports.length - 1];
+  const lastAccommodation =
+    travel.accommodations[travel.accommodations.length - 1];
 
   const lastE = TAA.length > 0 ? TAA[TAA.length - 1] : null;
   const lastDate = !!lastE
@@ -140,7 +145,14 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
           variant="extended"
           className={classes.fab}
           onClick={addDefaultTransport}
-          // disabled={!canAddDefaultTransport()}
+          disabled={
+            lastTransport &&
+            (lastTransport.mode === "" ||
+              !areStringsValid([
+                lastTransport.depLocation,
+                lastTransport.arrLocation
+              ]))
+          }
         >
           Ajouter un déplacement
           <AddIcon className={classes.extendedIcon} />
@@ -151,7 +163,11 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
           variant="extended"
           className={classes.fab}
           onClick={addDefaultAccommodation}
-          // disabled={!canAddDefaultAccommodation()}
+          disabled={
+            !!lastAccommodation &&
+            (lastAccommodation.accommodation === "" ||
+              !isStringValid(lastAccommodation.location))
+          }
         >
           Ajouter un hébergement
           <AddIcon className={classes.extendedIcon} />
