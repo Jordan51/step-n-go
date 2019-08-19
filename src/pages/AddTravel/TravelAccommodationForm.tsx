@@ -21,8 +21,6 @@ import {
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
-// TODO: Add controll so it is not possible to leave before you arrive!
-
 type AccommodationNames = "Camping" | "Hotel" | "";
 
 const accommodationTypes: AccommodationNames[] = ["Camping", "Hotel"];
@@ -75,9 +73,6 @@ const TravelAccommodationForm: React.FC<{
   const index = accommodations.findIndex(a => a.id === id);
   const accommodation = accommodations[index];
 
-  const [depDate, setDepDate] = React.useState<Date>(accommodation.depDate);
-  const [arrDate, setArrDate] = React.useState<Date>(accommodation.arrDate);
-
   const handleChange = (name: keyof AccommodationType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -99,9 +94,11 @@ const TravelAccommodationForm: React.FC<{
     updateTravel({ ...travel, accommodations: accommodations });
   };
 
-  if (depDate < arrDate) {
-    setDepDate(arrDate);
-    updateDate("depDate", arrDate);
+  if (
+    new Date(accommodation.depDate).getTime() <
+    new Date(accommodation.arrDate).getTime()
+  ) {
+    updateDate("depDate", accommodation.arrDate);
   }
 
   return (
@@ -171,9 +168,8 @@ const TravelAccommodationForm: React.FC<{
                 autoOk
                 helperText="Date d'arrivée"
                 placeholder="jj/mm/aaaa"
-                value={arrDate}
+                value={accommodation.arrDate}
                 onChange={date => {
-                  setArrDate(date as Date);
                   updateDate("arrDate", date as Date);
                 }}
                 InputAdornmentProps={{ position: "end" }}
@@ -199,9 +195,8 @@ const TravelAccommodationForm: React.FC<{
                 autoOk
                 helperText="Date de départ"
                 placeholder="jj/mm/aaaa"
-                value={depDate}
+                value={accommodation.depDate}
                 onChange={date => {
-                  setDepDate(date as Date);
                   updateDate("depDate", date as Date);
                 }}
                 InputProps={{

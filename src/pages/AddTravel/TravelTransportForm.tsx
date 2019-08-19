@@ -23,8 +23,6 @@ import AlarmIcon from "@material-ui/icons/Alarm";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { areStringsValid } from "../../scripts/inputTests";
 
-// TODO: Add controll so it is not possible to arrive before you leave!
-
 type TransportTypes =
   | "Avion"
   | "Bateau"
@@ -117,11 +115,6 @@ const TravelTransportForm: React.FC<{
   const index = transports.findIndex(t => t.id === id);
   const transport = transports[index];
 
-  const [depDate, setDepDate] = React.useState<Date>(transport.depDate);
-  const [depHour, setDepHour] = React.useState<Date>(transport.depHour);
-  const [arrDate, setArrDate] = React.useState<Date>(transport.arrDate);
-  const [arrHour, setArrHour] = React.useState<Date>(transport.arrHour);
-
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -143,13 +136,17 @@ const TravelTransportForm: React.FC<{
     updateTravel({ ...travel, transports: transports });
   };
 
-  if (arrDate < depDate) {
-    setArrDate(depDate);
-    updateDate("arrDate", depDate);
+  if (
+    new Date(transport.arrDate).getTime() <
+    new Date(transport.depDate).getTime()
+  ) {
+    updateDate("arrDate", transport.depDate);
   }
-  if (arrHour < depHour) {
-    setArrHour(depHour);
-    updateDate("arrHour", depHour);
+  if (
+    new Date(transport.arrHour).getTime() <
+    new Date(transport.depHour).getTime()
+  ) {
+    updateDate("arrHour", transport.depHour);
   }
 
   return (
@@ -221,9 +218,8 @@ const TravelTransportForm: React.FC<{
                 autoOk
                 helperText="Date de départ"
                 placeholder="jj/mm/aaaa"
-                value={depDate}
+                value={transport.depDate}
                 onChange={date => {
-                  setDepDate(date as Date);
                   updateDate("depDate", date as Date);
                 }}
                 InputProps={{
@@ -245,9 +241,8 @@ const TravelTransportForm: React.FC<{
                 ampm={false}
                 helperText="Heure de départ"
                 placeholder="hh:mm"
-                value={depHour}
+                value={transport.depHour}
                 onChange={date => {
-                  setDepHour(date as Date);
                   updateDate("depHour", date as Date);
                 }}
                 InputProps={{
@@ -300,9 +295,8 @@ const TravelTransportForm: React.FC<{
                 autoOk
                 helperText="Date d'arrivée"
                 placeholder="jj/mm/aaaa"
-                value={arrDate}
+                value={transport.arrDate}
                 onChange={date => {
-                  setArrDate(date as Date);
                   updateDate("arrDate", date as Date);
                 }}
                 InputAdornmentProps={{ position: "end" }}
@@ -324,9 +318,8 @@ const TravelTransportForm: React.FC<{
                 ampm={false}
                 helperText="Heure d'arrivée"
                 placeholder="hh:mm"
-                value={arrHour}
+                value={transport.arrHour}
                 onChange={date => {
-                  setArrHour(date as Date);
                   updateDate("arrDate", date as Date);
                 }}
                 InputAdornmentProps={{ position: "end" }}
