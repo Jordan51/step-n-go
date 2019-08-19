@@ -120,23 +120,33 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     <Box className={classes.root}>
       <Typography variant="h6">Transport et hébergement</Typography>
       <Divider />
-      <Box marginTop={"-8px"} minHeight={16}>
-        {TAA.map(e => {
-          return e.type === "transport" ? (
-            <TravelTransportForm
-              key={e.id}
-              id={e.id}
-              handleDelete={() => deleteTransport(e.id)}
-            />
-          ) : (
-            <TravelAccommodationForm
-              key={e.id}
-              id={e.id}
-              handleDelete={() => deleteAccommodation(e.id)}
-            />
-          );
-        })}
-      </Box>
+      {travel.transports.length === 0 && travel.accommodations.length === 0 ? (
+        <Box marginTop={5.8} marginBottom={5.8}>
+          <Typography>
+            Vous n'avez aucun transport et aucun hébergement de renseigné. Vous
+            pouvez en ajouter maintenant en appuyant sur les boutons ci-dessous
+            ou alors continuer et les enregistrer plus tard.
+          </Typography>
+        </Box>
+      ) : (
+        <Box marginTop={"-8px"} minHeight={16}>
+          {TAA.map(e => {
+            return e.type === "transport" ? (
+              <TravelTransportForm
+                key={e.id}
+                id={e.id}
+                handleDelete={() => deleteTransport(e.id)}
+              />
+            ) : (
+              <TravelAccommodationForm
+                key={e.id}
+                id={e.id}
+                handleDelete={() => deleteAccommodation(e.id)}
+              />
+            );
+          })}
+        </Box>
+      )}
 
       <Box display="flex" flexWrap="wrap" justifyContent="center">
         <Fab

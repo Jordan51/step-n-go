@@ -178,12 +178,14 @@ const AddTravel = () => {
         );
       case 3:
         return (
-          travel.transports.filter((t: TransportType) => {
-            return isTravelTransportFormValid(t);
-          }).length > 0 &&
-          travel.accommodations.filter((a: AccommodationType) => {
-            return isTravelAccommodationFormValid(a);
-          }).length > 0
+          (travel.transports.length === 0 ||
+            travel.transports.filter((t: TransportType) => {
+              return isTravelTransportFormValid(t);
+            }).length > 0) &&
+          (travel.accommodations.length === 0 ||
+            travel.accommodations.filter((a: AccommodationType) => {
+              return isTravelAccommodationFormValid(a);
+            }).length > 0)
         );
 
       // isStringValid(travel.transports[0].depLocation);
