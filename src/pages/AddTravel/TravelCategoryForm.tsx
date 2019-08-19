@@ -1,6 +1,7 @@
 import React from "react";
 
 import { TravelContext } from "../Travel/TravelContext";
+import { areStringsValid } from "../../scripts/inputTests";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -29,6 +30,12 @@ export const TravelCategories = [
   "Voyage touristique",
   "Séjour linguistique"
 ];
+
+export function isTravelCategoryFormValid(
+  category: TravelCategoryType
+): boolean {
+  return !!category && TravelCategories.includes(category);
+}
 
 const TravelCategoryForm: React.FC = () => {
   const classes = useStyles();

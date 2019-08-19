@@ -1,6 +1,7 @@
 import React from "react";
 
 import { TravelContext, generateID } from "../Travel/TravelContext";
+import { areStringsValid } from "../../scripts/inputTests";
 
 import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
@@ -53,6 +54,15 @@ export const defaultAccommodation: AccommodationType = {
   nbPers: 1,
   commentary: ""
 };
+
+export function isTravelAccommodationFormValid(
+  accommodation: AccommodationType
+): boolean {
+  return (
+    !!accommodation &&
+    areStringsValid([accommodation.accommodation, accommodation.location])
+  );
+}
 
 const TravelAccommodationForm: React.FC<{
   id: string;

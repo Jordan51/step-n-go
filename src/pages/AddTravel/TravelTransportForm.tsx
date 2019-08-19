@@ -21,6 +21,7 @@ import {
 
 import AlarmIcon from "@material-ui/icons/Alarm";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { areStringsValid } from "../../scripts/inputTests";
 
 // TODO: Add controll so it is not possible to arrive before you leave!
 
@@ -93,6 +94,17 @@ const locationExamples = [
 
 const randomLocationExample =
   locationExamples[Math.floor(Math.random() * locationExamples.length)];
+
+export function isTravelTransportFormValid(transport: TransportType): boolean {
+  return (
+    !!transport &&
+    areStringsValid([
+      transport.mode,
+      transport.depLocation,
+      transport.arrLocation
+    ])
+  );
+}
 
 const TravelTransportForm: React.FC<{
   id: string;

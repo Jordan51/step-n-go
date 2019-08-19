@@ -2,6 +2,7 @@ import React from "react";
 
 import TravelDepartureForm from "./TravelDepartureForm";
 import TravelDestinationForm from "./TravelDestinationForm";
+import { areStringsValid } from "../../scripts/inputTests";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import ArrowRight from "@material-ui/icons/ArrowRightAlt";
@@ -19,6 +20,20 @@ export const defaultDepartureAndDestination = {
   city: "",
   address: ""
 };
+
+export function isTravelDepartureAndDestinationFormValid(
+  departure: DepartureAndDestinationType,
+  destination: DepartureAndDestinationType
+): boolean {
+  return (
+    !!departure &&
+    !!destination &&
+    areStringsValid([
+      ...Object.values(departure),
+      ...Object.values(destination)
+    ])
+  );
+}
 
 const TravelDepartureAndDestinationForm: React.FC = () => {
   const classes = useStyles();

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { TravelContext } from "../Travel/TravelContext";
+import { isStringValid } from "../../scripts/inputTests";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +9,10 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
+
+export function isTravelNameFormValid(name: string): boolean {
+  return !!name && isStringValid(name);
+}
 
 const TravelNameForm: React.FC = () => {
   const classes = useStyles();

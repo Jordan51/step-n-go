@@ -1,15 +1,25 @@
 import React from "react";
 
 // Components
-import TravelNameForm from "./TravelNameForm";
-import TravelCategoryForm, { TravelCategories } from "./TravelCategoryForm";
-import TravelDepartureAndDestinationForm from "./TravelDepartureAndDestinationForm";
+import TravelNameForm, { isTravelNameFormValid } from "./TravelNameForm";
+import TravelCategoryForm, {
+  TravelCategories,
+  isTravelCategoryFormValid
+} from "./TravelCategoryForm";
+import TravelDepartureAndDestinationForm, {
+  isTravelDepartureAndDestinationFormValid
+} from "./TravelDepartureAndDestinationForm";
 import TravelTransportAndHousingForm from "./TravelTransportAndAccommodationForm";
 import {
   TravelContext,
   defaultTravel,
   TravelType
 } from "../Travel/TravelContext";
+import {
+  TransportType,
+  isTravelTransportFormValid
+} from "./TravelTransportForm";
+import { PATH_TRAVEL } from "../Travel";
 
 import { DisplayResolution } from "../../components/DisplayResolution";
 import { isStringValid, areStringsValid } from "../../scripts/inputTests";
@@ -25,9 +35,10 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Hidden from "@material-ui/core/Hidden";
-import { TransportType } from "./TravelTransportForm";
-import { AccommodationType } from "./TravelAccommodationForm";
-import { PATH_TRAVEL } from "../Travel";
+import {
+  AccommodationType,
+  isTravelAccommodationFormValid
+} from "./TravelAccommodationForm";
 
 export const PATH_ADD_TRAVEL = "/addTravel";
 
@@ -157,19 +168,21 @@ const AddTravel = () => {
   function isStepValid(): boolean {
     switch (activeStep) {
       case 0:
-        return !!travel.name && isStringValid(travel.name);
+        return isTravelNameFormValid(travel.name);
       case 1:
-        return !!travel.category && TravelCategories.includes(travel.category);
+        return isTravelCategoryFormValid(travel.category);
       case 2:
-        return areStringsValid([
-          ...Object.values(travel.departure),
-          ...Object.values(travel.destination)
-        ]);
+        return isTravelDepartureAndDestinationFormValid(
+          travel.departure,
+          travel.destination
+        );
       case 3:
         return (
           travel.transports.filter((t: TransportType) => {
-            console.log(areStringsValid([t.depDate, t.arrDate]));
-            return areStringsValid([t.depDate, t.arrDate]);
+            return isTravelTransportFormValid(t);
+          }).length > 0 &&
+          travel.accommodations.filter((a: AccommodationType) => {
+            return isTravelAccommodationFormValid(a);
           }).length > 0
         );
 
