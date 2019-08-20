@@ -18,36 +18,17 @@ import AddIcon from "@material-ui/icons/Add";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { areStringsValid, isStringValid } from "../../scripts/inputTests";
+import { sortTAAEventsByDates } from "../../scripts/dateFormatter";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 
 export type TransportsType = TransportType[];
 export type AccommodationsType = AccommodationType[];
 
-function sortEventsByDates(
-  events: Array<TransportType | AccommodationType>
-): Array<TransportType | AccommodationType> {
-  const newValues = events.sort((a, b) => {
-    const date1 = a.type === "transport" ? a.depDate : a.arrDate;
-    const date2 = b.type === "transport" ? b.depDate : b.arrDate;
-
-    const time1 = a.type === "transport" ? a.depHour : a.arrHour;
-    const time2 = b.type === "transport" ? b.depHour : b.arrHour;
-
-    const dateDiff = new Date(date1).getTime() - new Date(date2).getTime();
-    const timeDiff = new Date(time1).getTime() - new Date(time2).getTime();
-
-    // console.log("Date1:", date1 + "\n" + "Date2:", date2);
-    return dateDiff === 0 ? timeDiff : dateDiff;
-  });
-
-  return newValues;
-}
-
 const TravelTransportAndAccommodationForm: React.FC = () => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
-  const TAA: Array<TransportType | AccommodationType> = sortEventsByDates([
+  const TAA: Array<TransportType | AccommodationType> = sortTAAEventsByDates([
     ...travel.transports,
     ...travel.accommodations
   ]);

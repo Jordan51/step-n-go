@@ -9,6 +9,15 @@ import { useStateWithLocalStorage } from "../AddTravel";
 // ===================================================================================================>>> [END]
 
 import {
+  dateToShortString,
+  dateToFullString,
+  sortTAAEventsByDates
+} from "../../scripts/dateFormatter";
+
+import { TransportType } from "../AddTravel/TravelTransportForm";
+import { AccommodationType } from "../AddTravel/TravelAccommodationForm";
+
+import {
   Theme,
   makeStyles,
   createStyles,
@@ -30,14 +39,31 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
   // ===========================================================================================>>> [END]
   // const travel = getTravelById(match.params.id);
 
-  const steps = 0;
+  const TAA: Array<TransportType | AccommodationType> = sortTAAEventsByDates([
+    ...travel.transports,
+    ...travel.accommodations
+  ]);
+
+  const steps = TAA.length;
 
   return (
     // FIXME: -- IMPORTANT: TravelID (3/3) --
     <Box>
       <Typography variant={"h3"}>{travel.name}</Typography>
-      <Typography>Du {travel.name}</Typography>
-      <Typography>Etapes de prévues : {steps} </Typography>
+      <Box marginTop={2}>
+        <Typography>
+          Destination : {travel.destination.city} ({travel.destination.country})
+        </Typography>
+        <Typography>Du {dateToShortString(travel.depDate)}</Typography>
+        <Typography>Au {dateToShortString(travel.retDate)}</Typography>
+      </Box>
+      <Box marginTop={2}>
+        {steps > 0 ? (
+          <Typography>Etapes de prévues : {steps}</Typography>
+        ) : (
+          <Typography>Vous n'avez aucune étape de prévue</Typography>
+        )}
+      </Box>
     </Box>
   );
 };
