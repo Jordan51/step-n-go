@@ -16,6 +16,8 @@ export type TravelType = {
   category: TravelCategoryType;
   departure: DepartureAndDestinationType;
   destination: DepartureAndDestinationType;
+  depDate: Date;
+  retDate: Date;
   transports: TransportsType;
   accommodations: AccommodationsType;
   activities: null;
@@ -43,6 +45,8 @@ export const defaultTravel: TravelType = {
   category: "",
   departure: defaultDepartureAndDestination,
   destination: defaultDepartureAndDestination,
+  depDate: new Date(),
+  retDate: new Date(),
   transports: [defaultTransport],
   accommodations: [],
   activities: null

@@ -43,7 +43,7 @@ import {
 export const PATH_ADD_TRAVEL = "/addTravel";
 
 const steps = [
-  "Nom du voyage",
+  "Nom / dates du voyage",
   "Type de voyage",
   "Départ / Destination",
   "Transport / Hébergement"
@@ -68,7 +68,7 @@ function getStepContent(step: number): JSX.Element {
   }
 }
 
-const useStateWithLocalStorage = (
+export const useStateWithLocalStorage = (
   localStorageKey: string,
   defaultValue: {} | []
 ) => {
@@ -168,7 +168,11 @@ const AddTravel = () => {
   function isStepValid(): boolean {
     switch (activeStep) {
       case 0:
-        return isTravelNameFormValid(travel.name);
+        return isTravelNameFormValid(
+          travel.name,
+          travel.depDate,
+          travel.retDate
+        );
       case 1:
         return isTravelCategoryFormValid(travel.category);
       case 2:
@@ -248,7 +252,7 @@ const AddTravel = () => {
                 color="primary"
                 className={classes.button}
                 component={Link}
-                to={PATH_TRAVEL}
+                to={`${PATH_TRAVEL}/${travel.id}`}
               >
                 Terminer
               </Button>

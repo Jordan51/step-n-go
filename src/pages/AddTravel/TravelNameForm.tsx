@@ -2,16 +2,21 @@ import React from "react";
 
 import { TravelContext } from "../Travel/TravelContext";
 import { isStringValid } from "../../scripts/inputTests";
+import { CustomDatePicker } from "../../components/DateTimePicker";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
+import { TextField, Paper, Typography, Box, Divider } from "@material-ui/core";
 
-export function isTravelNameFormValid(name: string): boolean {
-  return !!name && isStringValid(name);
+export function isTravelNameFormValid(
+  name: string,
+  depDate: Date,
+  retDate: Date
+): boolean {
+  return (
+    !!name &&
+    isStringValid(name) &&
+    new Date(depDate).getTime() < new Date(retDate).getTime()
+  );
 }
 
 const TravelNameForm: React.FC = () => {
@@ -26,11 +31,15 @@ const TravelNameForm: React.FC = () => {
     updateTravel({ ...travel, name: newTravelName });
   };
 
+  if (new Date(travel.retDate).getTime() < new Date(travel.depDate).getTime()) {
+    updateTravel({ ...travel, retDate: travel.depDate });
+  }
+
   return (
     <Box className={classes.root}>
       <Typography variant="h6">Nouveau voyage</Typography>
       <Divider />
-      <Paper className={classes.paper}>
+      <Paper className={classes.paper1}>
         <form className={classes.form} noValidate autoComplete="off">
           <TextField
             id="travel-name"
@@ -42,6 +51,28 @@ const TravelNameForm: React.FC = () => {
           />
         </form>
       </Paper>
+      <Box className={classes.datePickersContainer}>
+        <Paper className={classes.paper2}>
+          <CustomDatePicker
+            id="travel-departure-date"
+            helperText="Date de départ"
+            value={travel.depDate}
+            onChange={date => {
+              updateTravel({ ...travel, depDate: date as Date });
+            }}
+          />
+        </Paper>
+        <Paper className={classes.paper2}>
+          <CustomDatePicker
+            id="travel-return-date"
+            helperText="Date de retour"
+            value={travel.retDate}
+            onChange={date => {
+              updateTravel({ ...travel, retDate: date as Date });
+            }}
+          />
+        </Paper>
+      </Box>
     </Box>
   );
 };
@@ -53,20 +84,35 @@ const useStyles = makeStyles((theme: Theme) =>
         width: "100%"
       }
     },
-    paper: {
-      padding: theme.spacing(1, 2, 2),
+    paper1: {
+      padding: theme.spacing(2, 3, 3),
       marginTop: theme.spacing(1)
+    },
+    paper2: {
+      padding: theme.spacing(3, 3, 2),
+      marginTop: theme.spacing(1),
+      "&:nth-of-type(1)": {
+        marginRight: theme.spacing(1),
+        [theme.breakpoints.down("xs")]: {
+          marginRight: 0
+        }
+      }
     },
     form: {
       display: "flex",
       flexWrap: "wrap"
     },
     textField: {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-      width: "350px",
+      margin: theme.spacing(1, 0, 0),
+      width: "100%"
+      // [theme.breakpoints.down("xs")]: {
+      //   width: "100%"
+      // }
+    },
+    datePickersContainer: {
+      display: "flex",
       [theme.breakpoints.down("xs")]: {
-        width: "100%"
+        flexDirection: "column"
       }
     }
   })

@@ -30,7 +30,7 @@ const TravelDepartureForm: React.FC = () => {
       <Typography variant="h6">Départ</Typography>
       <Divider />
       <Paper className={classes.paper}>
-        <form className={classes.container} noValidate autoComplete="off">
+        <form className={classes.form} noValidate autoComplete="off">
           <Grid
             container
             direction="row"
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: theme.spacing(1.5, 2, 2),
       marginTop: theme.spacing(1)
     },
-    container: {
+    form: {
       display: "flex",
       flexWrap: "wrap"
     },

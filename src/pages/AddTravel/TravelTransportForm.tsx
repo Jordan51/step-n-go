@@ -1,27 +1,25 @@
 import React from "react";
 
 import { TravelContext, generateID } from "../Travel/TravelContext";
+import { areStringsValid } from "../../scripts/inputTests";
+import {
+  CustomDatePicker,
+  CustomTimePicker
+} from "../../components/DateTimePicker";
 
-import DateFnsUtils from "@date-io/date-fns";
 import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import Typography from "@material-ui/core/Typography";
-
 import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker
-} from "@material-ui/pickers";
+  Grid,
+  TextField,
+  IconButton,
+  Paper,
+  MenuItem,
+  Typography
+} from "@material-ui/core";
 
-import AlarmIcon from "@material-ui/icons/Alarm";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { areStringsValid } from "../../scripts/inputTests";
 
 type TransportTypes =
   | "Avion"
@@ -150,192 +148,129 @@ const TravelTransportForm: React.FC<{
   }
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Paper className={classes.paper}>
-        <Typography className={classes.typoStep}>
-          Transport ({transport.id})
-        </Typography>
-        <IconButton
-          aria-label="delete"
-          className={classes.delButton}
-          size="small"
-          onClick={handleDelete}
-        >
-          <DeleteIcon />
-        </IconButton>
-        <form className={classes.form} noValidate autoComplete="off">
-          {/* First line */}
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={2}>
-              <TextField
-                id="travel-mean-of-transport"
-                select
-                value={transport.mode}
-                onChange={handleChange("mode")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                label="Transport"
-                helperText="Moyen de transport"
-                inputProps={{ "aria-label": "dense hidden label" }}
-                SelectProps={{
-                  MenuProps: {
-                    className: classes.menu
-                  }
-                }}
-              >
-                {transportModes.map((transport, idx) => (
-                  <MenuItem key={idx} value={transport}>
-                    {transport}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="travel-departure-location"
-                value={transport.depLocation}
-                onChange={handleChange("depLocation")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                placeholder={`Ex: ${randomLocationExample}`}
-                helperText="Lieu de départ"
-                inputProps={{ "aria-label": "dense hidden label" }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={2}>
-              <KeyboardDatePicker
-                id="travel-departure-date"
-                className={classes.datePickers}
-                margin="dense"
-                variant="inline"
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
-                InputAdornmentProps={{ position: "end" }}
-                hiddenLabel
-                disablePast
-                autoOk
-                helperText="Date de départ"
-                placeholder="jj/mm/aaaa"
-                value={transport.depDate}
-                onChange={date => {
-                  updateDate("depDate", date as Date);
-                }}
-                InputProps={{
-                  className: classes.dateAndTimePickerButtonInput
-                }}
-                KeyboardButtonProps={{
-                  className: classes.dateAndTimePickerButton
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={2}>
-              <KeyboardTimePicker
-                id="mui-pickers-time"
-                className={classes.timePickers}
-                margin="dense"
-                variant="inline"
-                inputVariant="outlined"
-                InputAdornmentProps={{ position: "end" }}
-                ampm={false}
-                helperText="Heure de départ"
-                placeholder="hh:mm"
-                value={transport.depHour}
-                onChange={date => {
-                  updateDate("depHour", date as Date);
-                }}
-                InputProps={{
-                  className: classes.dateAndTimePickerButtonInput
-                }}
-                KeyboardButtonProps={{
-                  className: classes.dateAndTimePickerButton
-                }}
-                keyboardIcon={<AlarmIcon />}
-              />
-            </Grid>
-
-            {/* Second Line */}
-            <Grid item xs={12} sm={2}>
-              <TextField
-                id="travel-ref"
-                value={transport.ref}
-                onChange={handleChange("ref")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                placeholder="Ex: AFR104"
-                helperText="Référence"
-                inputProps={{ "aria-label": "dense hidden label" }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                id="travel-arrival-location"
-                value={transport.arrLocation}
-                onChange={handleChange("arrLocation")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                placeholder={`Ex: ${randomLocationExample}`}
-                helperText="Lieu d'arriver"
-                inputProps={{ "aria-label": "dense hidden label" }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={2}>
-              <KeyboardDatePicker
-                id="travel-arrival-date"
-                className={classes.datePickers}
-                margin="dense"
-                variant="inline"
-                inputVariant="outlined"
-                format="dd/MM/yyyy"
-                hiddenLabel
-                disablePast
-                autoOk
-                helperText="Date d'arrivée"
-                placeholder="jj/mm/aaaa"
-                value={transport.arrDate}
-                onChange={date => {
-                  updateDate("arrDate", date as Date);
-                }}
-                InputAdornmentProps={{ position: "end" }}
-                InputProps={{
-                  className: classes.dateAndTimePickerButtonInput
-                }}
-                KeyboardButtonProps={{
-                  className: classes.dateAndTimePickerButton
-                }}
-              />
-            </Grid>
-            <Grid item xs={6} sm={2}>
-              <KeyboardTimePicker
-                id="travel-arrival-hour"
-                className={classes.timePickers}
-                margin="dense"
-                variant="inline"
-                inputVariant="outlined"
-                ampm={false}
-                helperText="Heure d'arrivée"
-                placeholder="hh:mm"
-                value={transport.arrHour}
-                onChange={date => {
-                  updateDate("arrDate", date as Date);
-                }}
-                InputAdornmentProps={{ position: "end" }}
-                InputProps={{
-                  className: classes.dateAndTimePickerButtonInput
-                }}
-                KeyboardButtonProps={{
-                  className: classes.dateAndTimePickerButton
-                }}
-                keyboardIcon={<AlarmIcon />}
-              />
-            </Grid>
+    <Paper className={classes.paper}>
+      <Typography className={classes.typoStep}>
+        Transport ({transport.id})
+      </Typography>
+      <IconButton
+        aria-label="delete"
+        className={classes.delButton}
+        size="small"
+        onClick={handleDelete}
+      >
+        <DeleteIcon />
+      </IconButton>
+      <form noValidate autoComplete="off">
+        {/* First line */}
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={2}>
+            <TextField
+              id="travel-transport-mean-of-transport"
+              select
+              value={transport.mode}
+              onChange={handleChange("mode")}
+              margin="dense"
+              variant="outlined"
+              className={clsx(classes.textField, classes.dense)}
+              label="Transport"
+              helperText="Moyen de transport"
+              inputProps={{ "aria-label": "dense hidden label" }}
+            >
+              {transportModes.map((transport, idx) => (
+                <MenuItem key={idx} value={transport}>
+                  {transport}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
-        </form>
-      </Paper>
-    </MuiPickersUtilsProvider>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="travel-transport-departure-location"
+              value={transport.depLocation}
+              onChange={handleChange("depLocation")}
+              margin="dense"
+              variant="outlined"
+              className={clsx(classes.textField, classes.dense)}
+              placeholder={`Ex: ${randomLocationExample}`}
+              helperText="Lieu de départ"
+              inputProps={{ "aria-label": "dense hidden label" }}
+            />
+          </Grid>
+          <Grid item xs={6} sm={2}>
+            <CustomDatePicker
+              id="travel-transport-departure-date"
+              value={transport.depDate}
+              onChange={date => {
+                updateDate("depDate", date as Date);
+              }}
+              inputVariant="outlined"
+              helperText="Date de départ"
+            />
+          </Grid>
+          <Grid item xs={6} sm={2}>
+            <CustomTimePicker
+              id="travel-transport-departure-hour"
+              value={transport.depHour}
+              onChange={date => {
+                updateDate("depHour", date as Date);
+              }}
+              inputVariant="outlined"
+              helperText="Heure de départ"
+            />
+          </Grid>
+
+          {/* Second Line */}
+          <Grid item xs={12} sm={2}>
+            <TextField
+              id="travel-transport-ref"
+              value={transport.ref}
+              onChange={handleChange("ref")}
+              margin="dense"
+              variant="outlined"
+              className={clsx(classes.textField, classes.dense)}
+              placeholder="Ex: AFR104"
+              helperText="Référence"
+              inputProps={{ "aria-label": "dense hidden label" }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="travel-transport-arrival-location"
+              value={transport.arrLocation}
+              onChange={handleChange("arrLocation")}
+              margin="dense"
+              variant="outlined"
+              className={clsx(classes.textField, classes.dense)}
+              placeholder={`Ex: ${randomLocationExample}`}
+              helperText="Lieu d'arriver"
+              inputProps={{ "aria-label": "dense hidden label" }}
+            />
+          </Grid>
+          <Grid item xs={6} sm={2}>
+            <CustomDatePicker
+              id="travel-transport-arrival-date"
+              value={transport.arrDate}
+              onChange={date => {
+                updateDate("arrDate", date as Date);
+              }}
+              inputVariant="outlined"
+              helperText="Date d'arrivée"
+            />
+          </Grid>
+          <Grid item xs={6} sm={2}>
+            <CustomTimePicker
+              id="travel-transport-arrival-hour"
+              value={transport.arrHour}
+              onChange={date => {
+                updateDate("arrHour", date as Date);
+              }}
+              inputVariant="outlined"
+              helperText="Heure d'arrivée"
+            />
+          </Grid>
+        </Grid>
+      </form>
+    </Paper>
   );
 };
 
@@ -346,40 +281,14 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(2, 0),
       padding: theme.spacing(1, 2)
     },
-    form: {
-      display: "flex",
-      flexWrap: "wrap"
-    },
     typoStep: {
       margin: theme.spacing(0.5, 1, 1, 0.25)
-    },
-    menu: {
-      width: 200
     },
     textField: {
       width: "100%"
     },
     dense: {
       margin: 0
-    },
-    formControl: {
-      width: "100%"
-    },
-    datePickers: {
-      marginTop: 0
-      // width: 150
-    },
-    timePickers: {
-      marginTop: 0
-      // width: 120
-    },
-    dateAndTimePickerButtonInput: {
-      // backgroundColor: "blue",
-      paddingRight: theme.spacing(0.5)
-    },
-    dateAndTimePickerButton: {
-      // backgroundColor: "red",
-      padding: theme.spacing(0.5)
     },
     fab: {
       margin: theme.spacing(1)
