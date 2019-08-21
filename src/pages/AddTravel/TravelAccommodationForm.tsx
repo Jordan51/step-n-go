@@ -21,14 +21,14 @@ import {
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
-type AccommodationNames = "Camping" | "Hotel" | "";
+export type AccommodationNames = "Camping" | "Hotel" | "";
 
 const accommodationTypes: AccommodationNames[] = ["Camping", "Hotel"];
 
 export type AccommodationType = {
   type: "accommodation";
   id: string;
-  accommodation: AccommodationNames | "";
+  mode: AccommodationNames | "";
   location: string;
   arrDate: Date;
   arrHour: Date;
@@ -42,7 +42,7 @@ export type AccommodationType = {
 export const defaultAccommodation: AccommodationType = {
   type: "accommodation",
   id: generateID("acdID"),
-  accommodation: "",
+  mode: "",
   location: "",
   arrDate: new Date(),
   arrHour: new Date(),
@@ -58,7 +58,7 @@ export function isTravelAccommodationFormValid(
 ): boolean {
   return (
     !!accommodation &&
-    areStringsValid([accommodation.accommodation, accommodation.location])
+    areStringsValid([accommodation.mode, accommodation.location])
   );
 }
 
@@ -131,10 +131,10 @@ const TravelAccommodationForm: React.FC<{
         <Grid container spacing={1}>
           <Grid item xs={12} sm={2}>
             <TextField
-              id="travel-accommodation"
+              id="travel-accommodation-mode"
               select
-              value={accommodation.accommodation}
-              onChange={handleChange("accommodation")}
+              value={accommodation.mode}
+              onChange={handleChange("mode")}
               margin="dense"
               variant="outlined"
               className={clsx(classes.textField, classes.dense)}

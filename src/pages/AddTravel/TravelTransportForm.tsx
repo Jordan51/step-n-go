@@ -21,7 +21,7 @@ import {
 
 import DeleteIcon from "@material-ui/icons/Delete";
 
-type TransportTypes =
+export type TransportNames =
   | "Avion"
   | "Bateau"
   | "Bus"
@@ -31,7 +31,7 @@ type TransportTypes =
   | "Voiture"
   | "";
 
-const transportModes: TransportTypes[] = [
+const transportModes: TransportNames[] = [
   "Avion",
   "Bateau",
   "Bus",
@@ -44,6 +44,7 @@ const transportModes: TransportTypes[] = [
 export type TransportType = {
   type: "transport";
   id: string;
+  mode: TransportNames | "";
   depLocation: string;
   depDate: Date;
   depHour: Date;
@@ -51,7 +52,6 @@ export type TransportType = {
   arrCity: string;
   arrDate: Date;
   arrHour: Date;
-  mode: TransportTypes | "";
   ref: string;
   price: number | "";
   nbPers: number;

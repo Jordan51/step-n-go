@@ -164,7 +164,7 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
           onClick={addDefaultAccommodation}
           disabled={
             !!lastAccommodation &&
-            (lastAccommodation.accommodation === "" ||
+            (lastAccommodation.mode === "" ||
               !isStringValid(lastAccommodation.location))
           }
         >

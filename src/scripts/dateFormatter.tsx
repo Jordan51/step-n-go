@@ -7,6 +7,13 @@ function addLeadingZero(e: number | string): string {
   return nb < 10 ? `0${nb}` : nb.toString();
 }
 
+export function timeToShortString(d: Date): string {
+  const date = new Date(d);
+  return `${addLeadingZero(date.getHours())}:${addLeadingZero(
+    date.getMinutes()
+  )}`;
+}
+
 export function dateToShortString(d: Date): string {
   const date = new Date(d);
   return `${addLeadingZero(date.getDate())}/${addLeadingZero(
@@ -17,7 +24,7 @@ export function dateToShortString(d: Date): string {
 export function dateToFullString(d: Date): string {
   const date = new Date(d);
   const options = {
-    weekday: "long",
+    weekday: "short",
     year: "numeric",
     month: "long",
     day: "numeric"

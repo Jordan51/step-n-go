@@ -79,7 +79,7 @@ const TravelRecap: React.FC = () => {
               <ul style={{ paddingLeft: 16 }}>
                 {travel.accommodations.map((a, idx) => (
                   <li key={idx}>
-                    {a.accommodation}, {a.location} <br /> Arrivé le{" "}
+                    {a.mode}, {a.location} <br /> Arrivé le{" "}
                     {dateToString(a.arrDate)} <br />
                     Départ le {dateToString(a.depDate)}
                   </li>
