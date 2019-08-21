@@ -3,7 +3,6 @@ import React from "react";
 // Components
 import TravelNameForm, { isTravelNameFormValid } from "./TravelNameForm";
 import TravelCategoryForm, {
-  TravelCategories,
   isTravelCategoryFormValid
 } from "./TravelCategoryForm";
 import TravelDepartureAndDestinationForm, {
@@ -19,26 +18,27 @@ import {
   TransportType,
   isTravelTransportFormValid
 } from "./TravelTransportForm";
-import { PATH_TRAVEL } from "../Travel";
-
-import { DisplayResolution } from "../../components/DisplayResolution";
-import { isStringValid, areStringsValid } from "../../scripts/inputTests";
-import { Link } from "react-router-dom";
-
-// Material-ui
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Hidden from "@material-ui/core/Hidden";
 import {
   AccommodationType,
   isTravelAccommodationFormValid
 } from "./TravelAccommodationForm";
+import { PATH_TRAVEL } from "../Travel";
+
+import { DisplayResolution } from "../../components/DisplayResolution";
+import { Link } from "react-router-dom";
+
+// Material-ui
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import {
+  Stepper,
+  Step,
+  StepButton,
+  Button,
+  Typography,
+  Box,
+  Container,
+  Hidden
+} from "@material-ui/core/";
 
 export const PATH_ADD_TRAVEL = "/addTravel";
 
@@ -143,7 +143,6 @@ const AddTravel = () => {
 
   function handleBack() {
     setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
-    // setCompleted({ ...completed, [activeStep - 1]: false });
   }
 
   const handleStep = (step: number) => () => {
@@ -158,11 +157,6 @@ const AddTravel = () => {
     completed[activeStep] = isStepValid();
     setCompleted(newCompleted);
     handleNext();
-  }
-
-  function handleReset() {
-    setActiveStep(0);
-    setCompleted({});
   }
 
   function isStepValid(): boolean {
@@ -212,7 +206,6 @@ const AddTravel = () => {
                   <StepButton
                     onClick={handleStep(index)}
                     completed={completed[index]}
-                    // disabled={!isStepValid()}
                   >
                     <Hidden xsDown>{label}</Hidden>
                   </StepButton>
@@ -252,35 +245,12 @@ const AddTravel = () => {
                 disabled={!isStepValid()}
                 variant="contained"
                 color="primary"
-                // onClick={handleNext}
                 onClick={handleComplete}
                 className={classes.button}
               >
-                {/* {completedSteps() === totalSteps() - 1 || allStepsCompleted()
-                  ? "Terminer"
-                  : "Continuer"} */}
                 Continuer
-                {/* {isLastStep() ? "Terminer" : "Continuer"} */}
               </Button>
             )}
-            {/* {activeStep !== steps.length &&
-                (completed[activeStep] ? (
-                  <Typography variant="caption" className={classes.completed}>
-                    Step {activeStep + 1} already completed
-                  </Typography>
-                ) : (
-                  <>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleComplete}
-                    >
-                      {completedSteps() === totalSteps() - 1
-                        ? "Terminer"
-                        : "Continuer"}
-                    </Button>
-                  </>
-                ))} */}
           </Box>
         </>
       </div>

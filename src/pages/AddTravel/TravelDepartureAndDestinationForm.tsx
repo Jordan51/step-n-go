@@ -4,7 +4,7 @@ import TravelDepartureForm from "./TravelDepartureForm";
 import TravelDestinationForm from "./TravelDestinationForm";
 import { areStringsValid } from "../../scripts/inputTests";
 
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+// import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import ArrowRight from "@material-ui/icons/ArrowRightAlt";
 import Grid from "@material-ui/core/Grid";
 import Hidden from "@material-ui/core/Hidden";
@@ -36,8 +36,7 @@ export function isTravelDepartureAndDestinationFormValid(
 }
 
 const TravelDepartureAndDestinationForm: React.FC = () => {
-  const classes = useStyles();
-
+  // const classes = useStyles();
   return (
     <Grid
       container
@@ -59,12 +58,12 @@ const TravelDepartureAndDestinationForm: React.FC = () => {
   );
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      // maxWidth: 1200
-    }
-  })
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     root: {
+//       maxWidth: 1200
+//     }
+//   })
+// );
 
 export default TravelDepartureAndDestinationForm;

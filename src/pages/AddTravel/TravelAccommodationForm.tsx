@@ -2,10 +2,7 @@ import React from "react";
 
 import { TravelContext, generateID } from "../Travel/TravelContext";
 import { areStringsValid } from "../../scripts/inputTests";
-import {
-  CustomDatePicker,
-  CustomTimePicker
-} from "../../components/DateTimePicker";
+import { CustomDatePicker } from "../../components/DateTimePicker";
 
 import clsx from "clsx";
 

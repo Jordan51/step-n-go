@@ -19,7 +19,6 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { areStringsValid, isStringValid } from "../../scripts/inputTests";
 import { sortTAAEventsByDates } from "../../scripts/dateFormatter";
-import { datePickerDefaultProps } from "@material-ui/pickers/constants/prop-types";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 // TODO: Show error when a TAA period is between another one
@@ -82,10 +81,11 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
       {
         ...defaultAccommodation,
         id: generateID("acdID"),
+        location: lastLocation,
         dateA: lastDate,
-        hourA: lastHour,
+        hourA: new Date(new Date().setHours(23, 59, 0, 0)),
         dateB: lastDate,
-        hourB: lastHour
+        hourB: new Date(new Date().setHours(23, 59, 0, 0))
       }
     ];
 

@@ -4,12 +4,10 @@ import React from "react";
 // The TravelContext should only be used for development purposes
 // It MUST be replaced later on by a real travel from the DB by its id (passed on with the url)
 // ====================================================================================================<<< [START]
-import { TravelContext, defaultTravel, TravelType } from "./TravelContext";
-import { useStateWithLocalStorage } from "../AddTravel";
+import { TravelType } from "./TravelContext";
 // ===================================================================================================>>> [END]
 
 import {
-  dateToShortString,
   dateToFullString,
   sortTAAEventsByDates,
   timeToShortString
@@ -35,11 +33,10 @@ import {
   StepContent,
   Paper,
   Container,
-  StepButton,
   StepLabel,
   StepConnector
 } from "@material-ui/core";
-import { styled, withStyles } from "@material-ui/styles";
+// import { styled, withStyles } from "@material-ui/styles";
 
 import FlightIcon from "@material-ui/icons/Flight";
 import TaxiIcon from "@material-ui/icons/LocalTaxi";
@@ -108,33 +105,7 @@ const StepIcon: React.FC<{
 
   const classes = useStyles();
   return <div className={`${classes.stepIcon}`}>{icon}</div>;
-  // <FlightIcon style={{ transform: "rotate(45deg)" }} />
-  // <TentIcon />
 };
-
-// const MyStepConnector = makeStyles((theme: Theme) => ({
-//   alternativeLabel: {
-//     top: 10,
-//     left: "calc(-50% + 16px)",
-//     right: "calc(50% + 16px)"
-//   },
-//   active: {
-//     "& $line": {
-//       borderColor: "#784af4"
-//     }
-//   },
-//   completed: {
-//     "& $line": {
-//       borderColor: "#784af4"
-//     }
-//   },
-//   line: {
-//     marginLeft: "6.5px",
-//     borderColor: theme.palette.primary.main,
-//     borderRadius: "1px",
-//     borderLeftWidth: "2px"
-//   }
-// }))(StepConnector);
 
 const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
   const classes = useStyles();
@@ -185,34 +156,43 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
         ) : (
           <Box className={classes.root}>
             <Typography>Etapes de prévues : {steps.length}</Typography>
-            {/* ============================================================================== */}
             <Stepper
-              nonLinear
               activeStep={activeStep}
               orientation="vertical"
               connector={<StepConnector className={classes.stepConnector} />}
             >
-              {steps.map((step, index) => (
-                <Box>
-                  <Typography>{dateToFullString(step.dateA)}</Typography>
-                  <Step key={step.id}>
-                    <StepLabel
-                      onClick={handleStep(index)}
-                      completed={isStepComplete(index)}
-                      // StepIconComponent={() => getStepIcon(step)}
-                      StepIconComponent={() => <StepIcon step={step} />}
-                      className={classes.stepLabel}
-                    >
-                      {step.type === "transport" ? (
-                        <Typography>{timeToShortString(step.hourA)}</Typography>
-                      ) : (
-                        <Typography>{timeToShortString(step.hourB)}</Typography>
-                      )}
-                    </StepLabel>
-                    <StepContent>{/* Step content HERE */}</StepContent>
-                  </Step>
-                </Box>
-              ))}
+              {steps.map((step, index) => {
+                const prevStep = index > 0 ? steps[index - 1] : null;
+                const showDate =
+                  !prevStep ||
+                  new Date(prevStep.dateA).setHours(0, 0, 0, 0) !==
+                    new Date(step.dateA).setHours(0, 0, 0, 0);
+
+                return (
+                  <Box key={step.id}>
+                    {showDate && (
+                      <Box marginBottom={1}>
+                        <Typography>{dateToFullString(step.dateA)}</Typography>
+                      </Box>
+                    )}
+                    <Step>
+                      <StepLabel
+                        onClick={handleStep(index)}
+                        completed={isStepComplete(index)}
+                        StepIconComponent={() => <StepIcon step={step} />}
+                        className={classes.stepLabel}
+                      >
+                        {step.type === "transport" && (
+                          <Typography className={classes.stepHour}>
+                            {timeToShortString(step.hourA)}
+                          </Typography>
+                        )}
+                      </StepLabel>
+                      <StepContent>{/* Step content HERE */}</StepContent>
+                    </Step>
+                  </Box>
+                );
+              })}
             </Stepper>
             {activeStep === steps.length && (
               <Paper square elevation={0} className={classes.resetContainer}>
@@ -221,7 +201,6 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
                 </Typography>
               </Paper>
             )}
-            {/* ============================================================================== */}
           </Box>
         )}
       </Box>
@@ -236,12 +215,18 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     stepLabel: {
       width: "min-content",
+      position: "relative",
       display: "flex",
       flexDirection: "row-reverse",
       color: "white"
     },
+    stepHour: {
+      top: "9px",
+      left: "5px",
+      position: "absolute"
+    },
     stepIcon: {
-      marginLeft: theme.spacing(2),
+      marginLeft: theme.spacing(7),
       width: "40px",
       height: "40px",
       borderRadius: "50%",
