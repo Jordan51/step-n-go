@@ -182,6 +182,7 @@ const AddTravel = () => {
         );
       case 3:
         return (
+          (travel.transports.length > 0 || travel.accommodations.length > 0) &&
           (travel.transports.length === 0 ||
             travel.transports.filter((t: TransportType) => {
               return isTravelTransportFormValid(t);
@@ -191,16 +192,6 @@ const AddTravel = () => {
               return isTravelAccommodationFormValid(a);
             }).length > 0)
         );
-
-      // isStringValid(travel.transports[0].depLocation);
-
-      // travel.transports.map((t: TransportType) =>
-      //   isStringValid(t.depLocation)
-      // );
-      // &&
-      // travel.accommodations.map((a: AccommodationType) =>
-      //   areStringsValid([a.accommodation, a.location])
-      // )
       default:
         return false;
     }

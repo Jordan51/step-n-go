@@ -134,6 +134,16 @@ const TravelTransportForm: React.FC<{
     updateTravel({ ...travel, transports: transports });
   };
 
+  const d0 = new Date();
+  const d1 = new Date(transport.depDate);
+  const d2 = new Date(travel.depDate);
+  d0.setHours(0, 0, 0, 0);
+  d1.setHours(0, 0, 0, 0);
+  d2.setHours(0, 0, 0, 0);
+
+  if (transports.length === 1 && d1.getTime() === d0.getTime()) {
+    updateDate("depDate", travel.depDate);
+  }
   if (
     new Date(transport.arrDate).getTime() <
     new Date(transport.depDate).getTime()

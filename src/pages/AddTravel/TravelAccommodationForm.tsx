@@ -94,11 +94,23 @@ const TravelAccommodationForm: React.FC<{
     updateTravel({ ...travel, accommodations: accommodations });
   };
 
+  const d0 = new Date();
+  const d1 = new Date(accommodation.arrDate);
+  const d2 = new Date(travel.depDate);
+  d0.setHours(0, 0, 0, 0);
+  d1.setHours(0, 0, 0, 0);
+  d2.setHours(0, 0, 0, 0);
+
+  if (accommodations.length === 1 && d1.getTime() === d0.getTime()) {
+    updateDate("arrDate", travel.depDate);
+  }
   if (
-    new Date(accommodation.depDate).getTime() <
+    new Date(accommodation.depDate).getTime() <=
     new Date(accommodation.arrDate).getTime()
   ) {
-    updateDate("depDate", accommodation.arrDate);
+    const newDepDate = new Date(accommodation.arrDate);
+    newDepDate.setDate(newDepDate.getDate() + 1);
+    updateDate("depDate", newDepDate);
   }
 
   return (

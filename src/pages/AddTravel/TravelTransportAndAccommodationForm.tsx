@@ -21,6 +21,16 @@ import { areStringsValid, isStringValid } from "../../scripts/inputTests";
 import { sortTAAEventsByDates } from "../../scripts/dateFormatter";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
+// TODO: Show error when a TAA period is between another one
+/** Example:
+ * You modify a transport arrival date from 10/09/2019 to 12/09/2019
+ * But there is an accommodation after that still has that 10/09/2019 arrival date
+ *
+ *        Transport 08/09/2019 -> 12/09/2019
+ *    Accommodation 10/09/2019 -> (whatever)
+ *
+ * This accommodation period is now stuck in between the previous transport date which shouldn't be possible/allowed
+ */
 
 export type TransportsType = TransportType[];
 export type AccommodationsType = AccommodationType[];
@@ -40,13 +50,13 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
   const lastE = TAA.length > 0 ? TAA[TAA.length - 1] : null;
   const lastDate = !!lastE
     ? lastE.type === "transport"
-      ? lastE.depDate
-      : lastE.arrDate
+      ? lastE.arrDate
+      : lastE.depDate
     : new Date();
   const lastHour = !!lastE
     ? lastE.type === "transport"
-      ? lastE.arrHour
-      : lastE.depHour
+      ? lastE.depHour
+      : lastE.arrHour
     : new Date();
   const lastLocation = !!lastE
     ? lastE.type === "transport"
@@ -102,11 +112,9 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
       <Typography variant="h6">Transport et hébergement</Typography>
       <Divider />
       {travel.transports.length === 0 && travel.accommodations.length === 0 ? (
-        <Box marginTop={5.8} marginBottom={5.8}>
+        <Box marginTop={3} marginBottom={3}>
           <Typography>
-            Vous n'avez aucun transport et aucun hébergement de renseigné. Vous
-            pouvez en ajouter maintenant en appuyant sur les boutons ci-dessous
-            ou alors continuer et les enregistrer plus tard.
+            Merci de renseigner au minimum un déplacement ou un hébergement.
           </Typography>
         </Box>
       ) : (
