@@ -63,14 +63,14 @@ const TravelNameForm: React.FC = () => {
               ) {
                 if (travel.transports.length === 1) {
                   const newTransports = travel.transports;
-                  newTransports[0].depDate = date as Date;
-                  newTransports[0].arrDate = date as Date;
+                  newTransports[0].dateA = date as Date;
+                  newTransports[0].dateB = date as Date;
                   updateTravel({ ...travel, transports: newTransports });
                 }
                 if (travel.accommodations.length === 1) {
                   const newAccommodations = travel.accommodations;
-                  newAccommodations[0].arrDate = date as Date;
-                  newAccommodations[0].depDate = date as Date;
+                  newAccommodations[0].dateA = date as Date;
+                  newAccommodations[0].dateB = date as Date;
                   updateTravel({
                     ...travel,
                     accommodations: newAccommodations

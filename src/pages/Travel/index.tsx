@@ -194,7 +194,7 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
             >
               {steps.map((step, index) => (
                 <Box>
-                  <Typography>date</Typography>
+                  <Typography>{dateToFullString(step.dateA)}</Typography>
                   <Step key={step.id}>
                     <StepLabel
                       onClick={handleStep(index)}
@@ -204,13 +204,9 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
                       className={classes.stepLabel}
                     >
                       {step.type === "transport" ? (
-                        <Typography>
-                          {timeToShortString(step.depHour)}
-                        </Typography>
+                        <Typography>{timeToShortString(step.hourA)}</Typography>
                       ) : (
-                        <Typography>
-                          {timeToShortString(step.arrHour)}
-                        </Typography>
+                        <Typography>{timeToShortString(step.hourB)}</Typography>
                       )}
                     </StepLabel>
                     <StepContent>{/* Step content HERE */}</StepContent>

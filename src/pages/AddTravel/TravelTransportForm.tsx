@@ -46,12 +46,12 @@ export type TransportType = {
   id: string;
   mode: TransportNames | "";
   depLocation: string;
-  depDate: Date;
-  depHour: Date;
+  dateA: Date; // Departure date
+  hourA: Date; // Departure hour
   arrLocation: string;
   arrCity: string;
-  arrDate: Date;
-  arrHour: Date;
+  dateB: Date; // Arrival date
+  hourB: Date; // Arrival hour
   ref: string;
   price: number | "";
   nbPers: number;
@@ -62,12 +62,12 @@ export const defaultTransport: TransportType = {
   type: "transport",
   id: generateID("transportID"),
   depLocation: "",
-  depDate: new Date(),
-  depHour: new Date(),
+  dateA: new Date(),
+  hourA: new Date(),
   arrLocation: "",
   arrCity: "",
-  arrDate: new Date(),
-  arrHour: new Date(),
+  dateB: new Date(),
+  hourB: new Date(),
   mode: "",
   ref: "",
   price: "",
@@ -135,26 +135,24 @@ const TravelTransportForm: React.FC<{
   };
 
   const d0 = new Date();
-  const d1 = new Date(transport.depDate);
+  const d1 = new Date(transport.dateA);
   const d2 = new Date(travel.depDate);
   d0.setHours(0, 0, 0, 0);
   d1.setHours(0, 0, 0, 0);
   d2.setHours(0, 0, 0, 0);
 
   if (transports.length === 1 && d1.getTime() === d0.getTime()) {
-    updateDate("depDate", travel.depDate);
+    updateDate("dateA", travel.depDate);
   }
   if (
-    new Date(transport.arrDate).getTime() <
-    new Date(transport.depDate).getTime()
+    new Date(transport.dateB).getTime() < new Date(transport.dateA).getTime()
   ) {
-    updateDate("arrDate", transport.depDate);
+    updateDate("dateB", transport.dateA);
   }
   if (
-    new Date(transport.arrHour).getTime() <
-    new Date(transport.depHour).getTime()
+    new Date(transport.hourB).getTime() < new Date(transport.hourA).getTime()
   ) {
-    updateDate("arrHour", transport.depHour);
+    updateDate("hourB", transport.hourA);
   }
 
   return (
@@ -209,9 +207,9 @@ const TravelTransportForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
               id="travel-transport-departure-date"
-              value={transport.depDate}
+              value={transport.dateA}
               onChange={date => {
-                updateDate("depDate", date as Date);
+                updateDate("dateA", date as Date);
               }}
               inputVariant="outlined"
               helperText="Date de départ"
@@ -220,9 +218,9 @@ const TravelTransportForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomTimePicker
               id="travel-transport-departure-hour"
-              value={transport.depHour}
+              value={transport.hourA}
               onChange={date => {
-                updateDate("depHour", date as Date);
+                updateDate("hourA", date as Date);
               }}
               inputVariant="outlined"
               helperText="Heure de départ"
@@ -259,9 +257,9 @@ const TravelTransportForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
               id="travel-transport-arrival-date"
-              value={transport.arrDate}
+              value={transport.dateB}
               onChange={date => {
-                updateDate("arrDate", date as Date);
+                updateDate("dateB", date as Date);
               }}
               inputVariant="outlined"
               helperText="Date d'arrivée"
@@ -270,9 +268,9 @@ const TravelTransportForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomTimePicker
               id="travel-transport-arrival-hour"
-              value={transport.arrHour}
+              value={transport.hourB}
               onChange={date => {
-                updateDate("arrHour", date as Date);
+                updateDate("hourB", date as Date);
               }}
               inputVariant="outlined"
               helperText="Heure d'arrivée"

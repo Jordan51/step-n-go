@@ -65,10 +65,9 @@ const TravelRecap: React.FC = () => {
                 {travel.transports.map((t, idx) => (
                   <li key={idx}>
                     {t.mode} ({t.ref}) <br /> Départ de {t.depLocation} <br />
-                    le {dateToString(t.depDate)} à {timeToString(t.depHour)}{" "}
-                    <br />
+                    le {dateToString(t.dateA)} à {timeToString(t.hourA)} <br />
                     Arrivée à {t.arrLocation} <br />
-                    le {dateToString(t.arrDate)} à {timeToString(t.arrHour)}
+                    le {dateToString(t.dateB)} à {timeToString(t.hourB)}
                   </li>
                 ))}
               </ul>
@@ -80,8 +79,8 @@ const TravelRecap: React.FC = () => {
                 {travel.accommodations.map((a, idx) => (
                   <li key={idx}>
                     {a.mode}, {a.location} <br /> Arrivé le{" "}
-                    {dateToString(a.arrDate)} <br />
-                    Départ le {dateToString(a.depDate)}
+                    {dateToString(a.dateA)} <br />
+                    Départ le {dateToString(a.dateB)}
                   </li>
                 ))}
               </ul>

@@ -36,11 +36,11 @@ export function sortTAAEventsByDates(
   events: Array<TransportType | AccommodationType>
 ): Array<TransportType | AccommodationType> {
   const newValues = events.sort((a, b) => {
-    const date1 = a.type === "transport" ? a.depDate : a.arrDate;
-    const date2 = b.type === "transport" ? b.depDate : b.arrDate;
+    const date1 = a.dateA;
+    const date2 = b.dateB;
 
-    const time1 = a.type === "transport" ? a.depHour : a.arrHour;
-    const time2 = b.type === "transport" ? b.depHour : b.arrHour;
+    const time1 = a.hourA;
+    const time2 = b.hourB;
 
     const dateDiff = new Date(date1).getTime() - new Date(date2).getTime();
     const timeDiff = new Date(time1).getTime() - new Date(time2).getTime();

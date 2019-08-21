@@ -19,6 +19,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { areStringsValid, isStringValid } from "../../scripts/inputTests";
 import { sortTAAEventsByDates } from "../../scripts/dateFormatter";
+import { datePickerDefaultProps } from "@material-ui/pickers/constants/prop-types";
 
 // TODO: (console error in Chrome) React does not recognize the `hiddenLabel`?
 // TODO: Show error when a TAA period is between another one
@@ -48,16 +49,10 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     travel.accommodations[travel.accommodations.length - 1];
 
   const lastE = TAA.length > 0 ? TAA[TAA.length - 1] : null;
-  const lastDate = !!lastE
-    ? lastE.type === "transport"
-      ? lastE.arrDate
-      : lastE.depDate
-    : new Date();
+  const lastDate = !!lastE ? lastE.dateB : new Date();
   const lastHour = !!lastE
-    ? lastE.type === "transport"
-      ? lastE.depHour
-      : lastE.arrHour
-    : new Date();
+    ? lastE.hourB
+    : new Date(new Date().setHours(12, 0, 0, 0));
   const lastLocation = !!lastE
     ? lastE.type === "transport"
       ? lastE.arrLocation
@@ -71,10 +66,10 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
         ...defaultTransport,
         id: generateID("transportID"),
         depLocation: lastLocation,
-        depDate: lastDate,
-        depHour: lastHour,
-        arrDate: lastDate,
-        arrHour: lastHour
+        dateA: lastDate,
+        hourA: lastHour,
+        dateB: lastDate,
+        hourB: lastHour
       }
     ];
 
@@ -87,10 +82,10 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
       {
         ...defaultAccommodation,
         id: generateID("acdID"),
-        arrDate: lastDate,
-        arrHour: lastHour,
-        depDate: lastDate,
-        depHour: lastHour
+        dateA: lastDate,
+        hourA: lastHour,
+        dateB: lastDate,
+        hourB: lastHour
       }
     ];
 

@@ -30,10 +30,10 @@ export type AccommodationType = {
   id: string;
   mode: AccommodationNames | "";
   location: string;
-  arrDate: Date;
-  arrHour: Date;
-  depDate: Date;
-  depHour: Date;
+  dateA: Date;
+  hourA: Date;
+  dateB: Date;
+  hourB: Date;
   price: number | "";
   nbPers: number;
   commentary: string;
@@ -44,10 +44,10 @@ export const defaultAccommodation: AccommodationType = {
   id: generateID("acdID"),
   mode: "",
   location: "",
-  arrDate: new Date(),
-  arrHour: new Date(),
-  depDate: new Date(),
-  depHour: new Date(),
+  dateA: new Date(),
+  hourA: new Date(),
+  dateB: new Date(),
+  hourB: new Date(),
   price: "",
   nbPers: 1,
   commentary: ""
@@ -95,22 +95,22 @@ const TravelAccommodationForm: React.FC<{
   };
 
   const d0 = new Date();
-  const d1 = new Date(accommodation.arrDate);
+  const d1 = new Date(accommodation.dateA);
   const d2 = new Date(travel.depDate);
   d0.setHours(0, 0, 0, 0);
   d1.setHours(0, 0, 0, 0);
   d2.setHours(0, 0, 0, 0);
 
   if (accommodations.length === 1 && d1.getTime() === d0.getTime()) {
-    updateDate("arrDate", travel.depDate);
+    updateDate("dateA", travel.depDate);
   }
   if (
-    new Date(accommodation.depDate).getTime() <=
-    new Date(accommodation.arrDate).getTime()
+    new Date(accommodation.dateB).getTime() <=
+    new Date(accommodation.dateA).getTime()
   ) {
-    const newDepDate = new Date(accommodation.arrDate);
-    newDepDate.setDate(newDepDate.getDate() + 1);
-    updateDate("depDate", newDepDate);
+    const newdateB = new Date(accommodation.dateA);
+    newdateB.setDate(newdateB.getDate() + 1);
+    updateDate("dateB", newdateB);
   }
 
   return (
@@ -168,9 +168,9 @@ const TravelAccommodationForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
               id="travel-accommodation-arrival-date"
-              value={accommodation.arrDate}
+              value={accommodation.dateA}
               onChange={date => {
-                updateDate("arrDate", date as Date);
+                updateDate("dateA", date as Date);
               }}
               inputVariant="outlined"
               helperText="Date d'arrivée"
@@ -179,9 +179,9 @@ const TravelAccommodationForm: React.FC<{
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
               id="travel-accommodation-departure-date"
-              value={accommodation.depDate}
+              value={accommodation.dateB}
               onChange={date => {
-                updateDate("depDate", date as Date);
+                updateDate("dateB", date as Date);
               }}
               inputVariant="outlined"
               helperText="Date de départ"
