@@ -34,7 +34,8 @@ import {
   Paper,
   Container,
   StepLabel,
-  StepConnector
+  StepConnector,
+  Divider
 } from "@material-ui/core";
 // import { styled, withStyles } from "@material-ui/styles";
 
@@ -49,62 +50,23 @@ import HotelIcon from "@material-ui/icons/Hotel";
 import { TentIcon } from "../../icons/";
 
 import ErrorIcon from "@material-ui/icons/Error";
+import Flight from "./Flight";
+import { withStyles } from "@material-ui/styles";
+import { height } from "@material-ui/system";
 
 export const PATH_TRAVEL = "/travel";
 
-function getStepContent(step: number): string {
-  switch (step) {
-    case 0:
-      return `Step 0`;
-    case 1:
-      return `Step 1`;
-    case 2:
-      return `Step 3`;
-    default:
-      return "Unknown step";
-  }
-}
-
-// function getStepIcon(step: TransportType | AccommodationType): JSX.Element {
-const StepIcon: React.FC<{
-  step: TransportType | AccommodationType;
-}> = ({ step }) => {
-  const mode: TransportNames | AccommodationNames = step.mode;
-  let icon = <ErrorIcon />;
-  switch (mode) {
-    // TRANSPORT
-    case "Avion":
-      icon = <FlightIcon style={{ transform: "rotate(45deg)" }} />;
-      break;
-    case "Bateau":
-      icon = <BoatIcon />;
-      break;
-    case "Bus":
-      icon = <BusIcon />;
-      break;
-    case "Taxi":
-      icon = <TaxiIcon />;
-      break;
-    case "Voiture":
-      icon = <CarIcon />;
-      break;
-    case "Train":
-      icon = <TrainIcon />;
-      break;
-    // ACCOMMODATION
-    case "Hotel":
-      icon = <HotelIcon />;
-      break;
-    case "Camping":
-      icon = <TentIcon />;
-      break;
-    // DEFAULT
-    default:
-      icon = <ErrorIcon />;
-  }
-
-  const classes = useStyles();
-  return <div className={`${classes.stepIcon}`}>{icon}</div>;
+const icons: { [mode: string]: React.ReactElement } = {
+  // TRANSPORT
+  Avion: <FlightIcon style={{ transform: "rotate(45deg)" }} />,
+  Bateau: <BoatIcon />,
+  Bus: <BusIcon />,
+  Taxi: <TaxiIcon />,
+  Voiture: <CarIcon />,
+  Train: <TrainIcon />,
+  // ACCOMMODATION
+  Hotel: <HotelIcon />,
+  Camping: <TentIcon />
 };
 
 const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
@@ -127,17 +89,49 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
   ]);
   const steps = TAA;
 
-  const handleStep = (step: number) => () => {
-    setActiveStep(step);
+  const handleStep = (stepNumber: number) => () => {
+    setActiveStep(stepNumber);
   };
 
-  function isStepComplete(step: number) {
+  function getStepIcon(step: TransportType | AccommodationType): JSX.Element {
+    // return <div className={classes.stepIcon}>{icons[step.mode]}</div>;
+    return <>{icons[step.mode]}</>;
+  }
+
+  function getStepContent(step: TransportType | AccommodationType) {
+    // : JSX.Element
+    switch (step.mode) {
+      // TRANSPORT
+      case "Avion":
+        return <Flight flight={step} />;
+      case "Bateau":
+        return;
+      case "Bus":
+        return;
+      case "Taxi":
+        return;
+      case "Voiture":
+        return;
+      case "Train":
+        return;
+      // ACCOMMODATION
+      case "Hotel":
+        return;
+      case "Camping":
+        return;
+      // DEFAULT
+      default:
+        return;
+    }
+  }
+
+  function isStepComplete(stepNumber: number) {
     return false;
   }
 
   return (
     // FIXME: -- IMPORTANT: TravelID (3/3) --
-    <Container>
+    <Container style={{ marginBottom: "70px" }}>
       <Box marginTop={2}>
         <Typography variant={"h3"}>{travel.name}</Typography>
         <Box marginTop={2}>
@@ -154,12 +148,14 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
         {steps.length === 0 ? (
           <Typography>Vous n'avez aucune étape de prévue</Typography>
         ) : (
-          <Box className={classes.root}>
+          <>
             <Typography>Etapes de prévues : {steps.length}</Typography>
             <Stepper
+              alternativeLabel
               activeStep={activeStep}
               orientation="vertical"
-              connector={<StepConnector className={classes.stepConnector} />}
+              style={{ paddingBottom: 0 }}
+              connector={null}
             >
               {steps.map((step, index) => {
                 const prevStep = index > 0 ? steps[index - 1] : null;
@@ -169,28 +165,40 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
                     new Date(step.dateA).setHours(0, 0, 0, 0);
 
                 return (
-                  <Box key={step.id}>
+                  <Step key={step.id} className={classes.stepContainer}>
                     {showDate && (
-                      <Box marginBottom={1}>
+                      <Box marginBottom={1} className={classes.stepDate}>
                         <Typography>{dateToFullString(step.dateA)}</Typography>
                       </Box>
                     )}
-                    <Step>
-                      <StepLabel
-                        onClick={handleStep(index)}
-                        completed={isStepComplete(index)}
-                        StepIconComponent={() => <StepIcon step={step} />}
+                    <Step className={classes.step}>
+                      {/* <StepLabel
+                        StepIconComponent={() => getStepIcon(step)}
                         className={classes.stepLabel}
-                      >
-                        {step.type === "transport" && (
+                      > */}
+                      {index < steps.length - 1 && (
+                        <div className={classes.stepConnector} />
+                      )}
+                      <Box>
+                        <Box className={classes.stepLabel}>
+                          <div className={classes.stepIcon}>
+                            {getStepIcon(step)}
+                          </div>
                           <Typography className={classes.stepHour}>
-                            {timeToShortString(step.hourA)}
+                            {step.type === "transport"
+                              ? `
+                              ${timeToShortString(step.hourA)}`
+                              : ""}
                           </Typography>
-                        )}
-                      </StepLabel>
-                      <StepContent>{/* Step content HERE */}</StepContent>
+                        </Box>
+                      </Box>
+                      {/* </StepLabel> */}
+                      <Box className={classes.stepContent}>
+                        {getStepContent(step)}
+                      </Box>
                     </Step>
-                  </Box>
+                    <Divider />
+                  </Step>
                 );
               })}
             </Stepper>
@@ -201,7 +209,7 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
                 </Typography>
               </Paper>
             )}
-          </Box>
+          </>
         )}
       </Box>
     </Container>
@@ -210,33 +218,55 @@ const Travel: React.FC<{ match: { params: { id: string } } }> = ({ match }) => {
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      // width: "90%"
+    stepContainer: {
+      width: "100%"
+    },
+    step: {
+      margin: theme.spacing(2),
+      display: "flex"
+    },
+    stepDate: {
+      padding: theme.spacing(1, 1.5),
+      backgroundColor: "lightgrey",
+      borderRadius: "3px",
+      zIndex: 100
     },
     stepLabel: {
       width: "min-content",
+      marginRight: theme.spacing(2),
       position: "relative",
       display: "flex",
       flexDirection: "row-reverse",
-      color: "white"
+      alignItems: "center"
     },
     stepHour: {
-      top: "9px",
-      left: "5px",
-      position: "absolute"
+      margin: 0,
+      width: "65px",
+      fontSize: "1.2em"
     },
     stepIcon: {
-      marginLeft: theme.spacing(7),
-      width: "40px",
-      height: "40px",
+      width: "48px",
+      height: "48px",
+      zIndex: 100,
       borderRadius: "50%",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: theme.palette.primary.main
+      backgroundColor: theme.palette.primary.main,
+      color: "white"
     },
     stepConnector: {
-      marginLeft: "75px"
+      // marginLeft: "75px"
+      top: "40px",
+      left: "86.5px",
+      width: "5px",
+      height: "calc(100% + 40px)",
+      zIndex: 0,
+      position: "absolute",
+      backgroundColor: theme.palette.primary.main
+    },
+    stepContent: {
+      // marginTop: theme.spacing(1)
     },
     actionsContainer: {
       marginBottom: theme.spacing(2)

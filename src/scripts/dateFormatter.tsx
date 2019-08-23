@@ -29,7 +29,8 @@ export function dateToFullString(d: Date): string {
     month: "long",
     day: "numeric"
   };
-  return `${date.toLocaleDateString("fr-FR", options)}`;
+  const stringDate = `${date.toLocaleDateString("fr-FR", options)}`;
+  return stringDate.charAt(0).toUpperCase() + stringDate.slice(1);
 }
 
 export function sortTAAEventsByDates(
