@@ -1,5 +1,6 @@
 import { generateID } from "../pages/Travel/TravelContext";
 import { areStringsValid } from "../scripts/inputTests";
+import { StepType, defaultStep } from "./Step";
 
 export type TransportNames =
   | "Avion"
@@ -33,7 +34,7 @@ export type TransportType = {
   dateB: Date; // Arrival date
   hourB: Date; // Arrival hour
   ref: string;
-};
+} & StepType;
 
 export const defaultTransport: TransportType = {
   type: "transport",
@@ -46,7 +47,8 @@ export const defaultTransport: TransportType = {
   dateB: new Date(),
   hourB: new Date(),
   mode: "",
-  ref: ""
+  ref: "",
+  ...defaultStep
 };
 
 const locationExamples = [

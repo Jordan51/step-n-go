@@ -1,14 +1,15 @@
-import { TransportType } from "./Transport";
-import { AccommodationType } from "./Accommodation";
-import { ActivityType } from "./Activity";
+export type StepType = {
+  price: number | null;
+  hasBeenPayed: boolean;
+  hasBeenReserved: boolean;
+  nbPers: number;
+  commentary: string;
+};
 
-export type StepType =
-  | TransportType
-  | AccommodationType
-  | ActivityType & {
-      price: number | undefined;
-      hasBeenPayed: boolean;
-      hasBeenReserved: boolean;
-      nbPers: number;
-      commentary: string;
-    };
+export const defaultStep: StepType = {
+  price: null,
+  hasBeenPayed: false,
+  hasBeenReserved: false,
+  nbPers: 1,
+  commentary: ""
+};

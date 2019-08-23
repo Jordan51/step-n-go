@@ -1,5 +1,6 @@
 import { generateID } from "../pages/Travel/TravelContext";
 import { areStringsValid } from "../scripts/inputTests";
+import { StepType, defaultStep } from "./Step";
 
 export type AccommodationNames = "Camping" | "Hotel" | "";
 
@@ -14,7 +15,7 @@ export type AccommodationType = {
   hourA: Date;
   dateB: Date;
   hourB: Date;
-};
+} & StepType;
 
 export const defaultAccommodation: AccommodationType = {
   type: "accommodation",
@@ -24,7 +25,8 @@ export const defaultAccommodation: AccommodationType = {
   dateA: new Date(),
   hourA: new Date(),
   dateB: new Date(),
-  hourB: new Date()
+  hourB: new Date(),
+  ...defaultStep
 };
 
 export function isTravelAccommodationFormValid(
