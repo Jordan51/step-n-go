@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {},
     paper: {
-      padding: theme.spacing(1.5, 2, 2),
+      padding: theme.spacing(3),
       marginTop: theme.spacing(1)
     },
     form: {

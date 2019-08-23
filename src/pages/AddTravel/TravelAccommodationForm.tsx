@@ -1,10 +1,13 @@
 import React from "react";
-
-import { TravelContext, generateID } from "../Travel/TravelContext";
-import { areStringsValid } from "../../scripts/inputTests";
-import { CustomDatePicker } from "../../components/DateTimePicker";
-
 import clsx from "clsx";
+
+import {
+  AccommodationType,
+  accommodationModes
+} from "../../types/Accommodation";
+
+import { TravelContext } from "../Travel/TravelContext";
+import { CustomDatePicker } from "../../components/DateTimePicker";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -17,47 +20,6 @@ import {
 } from "@material-ui/core";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-
-export type AccommodationNames = "Camping" | "Hotel" | "";
-
-const accommodationTypes: AccommodationNames[] = ["Camping", "Hotel"];
-
-export type AccommodationType = {
-  type: "accommodation";
-  id: string;
-  mode: AccommodationNames | "";
-  location: string;
-  dateA: Date;
-  hourA: Date;
-  dateB: Date;
-  hourB: Date;
-  price: number | "";
-  nbPers: number;
-  commentary: string;
-};
-
-export const defaultAccommodation: AccommodationType = {
-  type: "accommodation",
-  id: generateID("acdID"),
-  mode: "",
-  location: "",
-  dateA: new Date(),
-  hourA: new Date(),
-  dateB: new Date(),
-  hourB: new Date(),
-  price: "",
-  nbPers: 1,
-  commentary: ""
-};
-
-export function isTravelAccommodationFormValid(
-  accommodation: AccommodationType
-): boolean {
-  return (
-    !!accommodation &&
-    areStringsValid([accommodation.mode, accommodation.location])
-  );
-}
 
 const TravelAccommodationForm: React.FC<{
   id: string;
@@ -139,7 +101,7 @@ const TravelAccommodationForm: React.FC<{
               helperText="Type d'hébergement"
               inputProps={{ "aria-label": "dense hidden label" }}
             >
-              {accommodationTypes.map((accommodation, idx) => (
+              {accommodationModes.map((accommodation, idx) => (
                 <MenuItem key={idx} value={accommodation}>
                   {accommodation}
                 </MenuItem>

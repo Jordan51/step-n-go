@@ -1,13 +1,16 @@
 import React from "react";
+import clsx from "clsx";
 
-import { TravelContext, generateID } from "../Travel/TravelContext";
-import { areStringsValid } from "../../scripts/inputTests";
+import {
+  transportModes,
+  TransportType,
+  randomLocationExample
+} from "../../types/Transport";
+import { TravelContext } from "../Travel/TravelContext";
 import {
   CustomDatePicker,
   CustomTimePicker
 } from "../../components/DateTimePicker";
-
-import clsx from "clsx";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -20,87 +23,6 @@ import {
 } from "@material-ui/core";
 
 import DeleteIcon from "@material-ui/icons/Delete";
-
-export type TransportNames =
-  | "Avion"
-  | "Bateau"
-  | "Bus"
-  | "Métro"
-  | "Taxi"
-  | "Train"
-  | "Voiture"
-  | "";
-
-const transportModes: TransportNames[] = [
-  "Avion",
-  "Bateau",
-  "Bus",
-  "Métro",
-  "Taxi",
-  "Train",
-  "Voiture"
-];
-
-export type TransportType = {
-  type: "transport";
-  id: string;
-  mode: TransportNames | "";
-  depLocation: string;
-  dateA: Date; // Departure date
-  hourA: Date; // Departure hour
-  arrLocation: string;
-  arrCity: string;
-  dateB: Date; // Arrival date
-  hourB: Date; // Arrival hour
-  ref: string;
-  price: number | "";
-  nbPers: number;
-  commentary: string;
-};
-
-export const defaultTransport: TransportType = {
-  type: "transport",
-  id: generateID("transportID"),
-  depLocation: "",
-  dateA: new Date(),
-  hourA: new Date(),
-  arrLocation: "",
-  arrCity: "",
-  dateB: new Date(),
-  hourB: new Date(),
-  mode: "",
-  ref: "",
-  price: "",
-  nbPers: 1,
-  commentary: ""
-};
-
-const locationExamples = [
-  "Aéroport Paris Charles De Gaulle (Paris)",
-  "Aéroport de Londres-Heathrow (Londres)",
-  "Aéroport international John F. Kennedy (New York)",
-  "Aéroport International de Hong Kong (Hong Kong)",
-  "Aéroport de Porto-Francisco Sá-Carneiro (Porto)"
-  // "Gare du Nord (Paris)",
-  // "Gare Saint-Pancras (Londres)",
-  // "Gare Lyon Perrache (Lyon)",
-  // "Gare Shinjuku Station (Tokyo)",
-  // "Gare Grand Central Terminal (New York)"
-];
-
-const randomLocationExample =
-  locationExamples[Math.floor(Math.random() * locationExamples.length)];
-
-export function isTravelTransportFormValid(transport: TransportType): boolean {
-  return (
-    !!transport &&
-    areStringsValid([
-      transport.mode,
-      transport.depLocation,
-      transport.arrLocation
-    ])
-  );
-}
 
 const TravelTransportForm: React.FC<{
   id: string;

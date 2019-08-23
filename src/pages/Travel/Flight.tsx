@@ -1,13 +1,18 @@
 import React from "react";
 
-import { Typography } from "@material-ui/core";
-import { TransportType } from "../AddTravel/TravelTransportForm";
+import { TransportType } from "../../types/Transport";
+
+import { Typography, Box } from "@material-ui/core";
+import ArrowRight from "@material-ui/icons/ArrowRightAlt";
 
 const Flight: React.FC<{ flight: TransportType }> = ({ flight }) => {
   return (
     <>
-      <Typography>{flight.depLocation}</Typography>
-      <Typography>{flight.arrLocation}</Typography>
+      <Box display="flex">
+        <Typography>{flight.depLocation}</Typography>
+        <ArrowRight style={{ margin: "0 8px" }} />
+        <Typography>{flight.arrLocation}</Typography>
+      </Box>
       <Typography>Info B</Typography>
       <Typography>Info C</Typography>
     </>

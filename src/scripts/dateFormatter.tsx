@@ -1,5 +1,5 @@
-import { TransportType } from "../pages/AddTravel/TravelTransportForm";
-import { AccommodationType } from "../pages/AddTravel/TravelAccommodationForm";
+import { TransportType } from "../types/Transport";
+import { AccommodationType } from "../types/Accommodation";
 
 function addLeadingZero(e: number | string): string {
   const nb = typeof e === "string" ? parseInt(e) : e;

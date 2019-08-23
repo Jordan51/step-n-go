@@ -13,14 +13,8 @@ import {
   timeToShortString
 } from "../../scripts/dateFormatter";
 
-import {
-  TransportType,
-  TransportNames
-} from "../AddTravel/TravelTransportForm";
-import {
-  AccommodationType,
-  AccommodationNames
-} from "../AddTravel/TravelAccommodationForm";
+import { TransportType } from "../../types/Transport";
+import { AccommodationType } from "../../types/Accommodation";
 
 import {
   Theme,
@@ -30,11 +24,8 @@ import {
   Typography,
   Stepper,
   Step,
-  StepContent,
   Paper,
   Container,
-  StepLabel,
-  StepConnector,
   Divider
 } from "@material-ui/core";
 // import { styled, withStyles } from "@material-ui/styles";
@@ -241,7 +232,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     stepHour: {
       margin: 0,
-      width: "65px",
+      width: "60px",
       fontSize: "1.2em"
     },
     stepIcon: {
@@ -253,12 +244,13 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: theme.palette.primary.main,
-      color: "white"
+      color: "white",
+      border: "4px solid white"
     },
     stepConnector: {
       // marginLeft: "75px"
       top: "40px",
-      left: "86.5px",
+      left: "85.5px",
       width: "5px",
       height: "calc(100% + 40px)",
       zIndex: 0,
