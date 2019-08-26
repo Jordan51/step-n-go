@@ -5,7 +5,7 @@ import {
   transportModes,
   TransportType,
   randomLocationExample
-} from "../../types/Transport";
+} from "../../types/travel/transport/Transport";
 import { TravelContext } from "../Travel/TravelContext";
 import {
   CustomDatePicker,
@@ -150,6 +150,8 @@ const TravelTransportForm: React.FC<{
           </Grid>
 
           {/* Second Line */}
+          {/* Vol -> Compagnie */}
+          {/* Hotel -> Nom */}
           <Grid item xs={12} sm={2}>
             <TextField
               id="travel-transport-ref"

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TransportType } from "../../types/Transport";
+import { TransportType } from "../../types/travel/transport/Transport";
 
 import { Typography, Box } from "@material-ui/core";
 import ArrowRight from "@material-ui/icons/ArrowRightAlt";

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import {
   AccommodationType,
   accommodationModes
-} from "../../types/Accommodation";
+} from "../../types/travel/Accommodation";
 
 import { TravelContext } from "../Travel/TravelContext";
 import { CustomDatePicker } from "../../components/DateTimePicker";

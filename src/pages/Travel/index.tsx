@@ -13,8 +13,8 @@ import {
   timeToShortString
 } from "../../scripts/dateFormatter";
 
-import { TransportType } from "../../types/Transport";
-import { AccommodationType } from "../../types/Accommodation";
+import { TransportType } from "../../types/travel/transport/Transport";
+import { AccommodationType } from "../../types/travel/Accommodation";
 
 import {
   Theme,

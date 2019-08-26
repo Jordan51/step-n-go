@@ -2,12 +2,15 @@ import React from "react";
 
 import { TravelContext, generateID } from "../Travel/TravelContext";
 import TravelTransportForm from "./TravelTransportForm";
-import { TransportType, defaultTransport } from "../../types/Transport";
+import {
+  TransportType,
+  defaultTransport
+} from "../../types/travel/transport/Transport";
 import TravelAccommodationForm from "./TravelAccommodationForm";
 import {
   AccommodationType,
   defaultAccommodation
-} from "../../types/Accommodation";
+} from "../../types/travel/Accommodation";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";

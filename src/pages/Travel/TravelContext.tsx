@@ -11,7 +11,7 @@ import {
   TransportsType,
   AccommodationsType
 } from "../AddTravel/TravelTransportAndAccommodationForm";
-import { defaultTransport } from "../../types/Transport";
+import { defaultTransport } from "../../types/travel/transport/Transport";
 
 export type TravelType = {
   id: string;

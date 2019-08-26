@@ -17,11 +17,11 @@ import {
 import {
   TransportType,
   isTravelTransportFormValid
-} from "../../types/Transport";
+} from "../../types/travel/transport/Transport";
 import {
   AccommodationType,
   isTravelAccommodationFormValid
-} from "../../types/Accommodation";
+} from "../../types/travel/Accommodation";
 import { PATH_TRAVEL } from "../Travel";
 
 import { DisplayResolution } from "../../components/DisplayResolution";

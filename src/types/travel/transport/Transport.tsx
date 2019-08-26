@@ -1,6 +1,6 @@
-import { generateID } from "../pages/Travel/TravelContext";
-import { areStringsValid } from "../scripts/inputTests";
-import { StepType, defaultStep } from "./Step";
+import { generateID } from "../../../pages/Travel/TravelContext";
+import { areStringsValid } from "../../../scripts/inputTests";
+import { StepType, defaultStep } from "../Step";
 
 export type TransportNames =
   | "Avion"
