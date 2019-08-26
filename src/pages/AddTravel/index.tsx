@@ -168,7 +168,11 @@ const AddTravel = () => {
           travel.retDate
         );
       case 1:
-        return isTravelCategoryFormValid(travel.category);
+        return isTravelCategoryFormValid(
+          travel.type,
+          travel.nbPers,
+          travel.category
+        );
       case 2:
         return isTravelDepartureAndDestinationFormValid(
           travel.departure,

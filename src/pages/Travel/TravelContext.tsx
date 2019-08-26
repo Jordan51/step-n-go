@@ -1,5 +1,8 @@
 import React from "react";
-import { TravelCategoryType } from "../AddTravel/TravelCategoryForm";
+import {
+  TravelCategoryType,
+  TravelTypeType
+} from "../AddTravel/TravelCategoryForm";
 import {
   DepartureAndDestinationType,
   defaultDepartureAndDestination
@@ -13,6 +16,8 @@ import { defaultTransport } from "../../types/Transport";
 export type TravelType = {
   id: string;
   name: string;
+  type: TravelTypeType;
+  nbPers: number;
   category: TravelCategoryType;
   departure: DepartureAndDestinationType;
   destination: DepartureAndDestinationType;
@@ -42,7 +47,9 @@ export function generateID(label: string) {
 export const defaultTravel: TravelType = {
   id: generateID("travelID"),
   name: "",
+  type: "",
   category: "",
+  nbPers: -1,
   departure: defaultDepartureAndDestination,
   destination: defaultDepartureAndDestination,
   depDate: new Date(),
