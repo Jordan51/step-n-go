@@ -130,14 +130,23 @@ const AddTravel = () => {
   function handleNext() {
     const newActiveStep = !allStepsCompleted()
       ? // It's the last step, but not all steps have been completed,
-        // find the first step that has been completed
+        // find the next step that is not completed
         // steps.findIndex((step, i) => !(i in completed))
         isLastStep()
-        ? completed.indexOf(false)
-        : completed.findIndex((e: boolean, index: number) => {
+        ? // If the current step is the last one
+          // then look for the first incompleted step
+          completed.indexOf(false)
+        : // If not
+        // then look if there is step that is not completed after the current step (and not bafore!)
+        completed.slice(activeStep, completed.length).includes(false)
+        ? // If none of the above (it is not the last step + all steps after the current step are completed)
+          // then search from the beginning of the array
+          completed.findIndex((e: boolean, index: number) => {
             return index > activeStep && e === false;
           })
+        : completed.indexOf(false)
       : activeStep + 1;
+
     setActiveStep(newActiveStep);
   }
 
@@ -194,8 +203,6 @@ const AddTravel = () => {
         return false;
     }
   }
-
-  console.log(travel);
 
   return (
     <TravelContext.Provider value={travelProviderValue}>
