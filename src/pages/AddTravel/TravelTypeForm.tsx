@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TravelContext } from "../Travel/TravelContext";
+import { TravelContext, TravelType } from "../Travel/TravelContext";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -14,9 +14,26 @@ import {
 import clsx from "clsx";
 
 // TODO: Add more categories
-// TODO: Add a filter system
+// TODO: Filter the categories (eg: do not show FESTIVAL if it's a professional travel)
+/** Use an object like
+ * {
+ *    Personnel: {
+ *        "Camping",
+ *        "Croisière"
+ *         ...
+ *    },
+ *    Scolaire: {
+ *        "Séjour linguistique",
+ *         ...
+ *    },
+ *    Professionnel: {
+ *        "Déplacement professionnel"
+ *         ...
+ *    }
+ * }
+ */
 
-export type TravelTypeType = "Personnel" | "Scolaire" | "Professionnel" | "";
+export type TravelTypeType = "Personnel" | "Scolaire" | "Professionnel";
 export const TravelTypes = ["Personnel", "Scolaire", "Professionnel"];
 
 export type TravelCategoryType =
@@ -25,8 +42,7 @@ export type TravelCategoryType =
   | "Déplacement professionnel"
   | "Festival"
   | "Voyage touristique"
-  | "Séjour linguistique"
-  | "";
+  | "Séjour linguistique";
 
 export const TravelCategories = [
   "Camping",
@@ -57,10 +73,10 @@ const TravelCategoryForm: React.FC = () => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
-  const handleChange = (category: TravelCategoryType) => (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  const handleChange = (name: keyof TravelType, value: string | number) => (
+    event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    updateTravel({ ...travel, category: category });
+    updateTravel({ ...travel, [name]: value });
   };
 
   return (
@@ -79,34 +95,16 @@ const TravelCategoryForm: React.FC = () => {
           <Typography variant="h6">Type de voyage</Typography>
           <Divider />
           <Paper className={classes.paper1}>
-            <Button
-              variant={travel.type === "Personnel" ? "contained" : "outlined"}
-              onClick={() =>
-                updateTravel({
-                  ...travel,
-                  type: "Personnel"
-                })
-              }
-              color="primary"
-              className={classes.button}
-            >
-              Personnel
-            </Button>
-            <Button
-              variant={
-                travel.type === "Professionnel" ? "contained" : "outlined"
-              }
-              onClick={() =>
-                updateTravel({
-                  ...travel,
-                  type: "Professionnel"
-                })
-              }
-              color="primary"
-              className={classes.button}
-            >
-              Professionnel
-            </Button>
+            {TravelTypes.map((type, idx) => (
+              <Button
+                variant={type === travel.type ? "contained" : "outlined"}
+                onClick={handleChange("type", type)}
+                color="primary"
+                className={classes.button}
+              >
+                {type}
+              </Button>
+            ))}
           </Paper>
         </Box>
 
@@ -117,12 +115,7 @@ const TravelCategoryForm: React.FC = () => {
             <Paper className={clsx(classes.paper1, classes.paperAlone)}>
               <Button
                 variant={travel.nbPers === 1 ? "contained" : "outlined"}
-                onClick={() =>
-                  updateTravel({
-                    ...travel,
-                    nbPers: 1
-                  })
-                }
+                onClick={handleChange("nbPers", 1)}
                 color="primary"
                 className={classes.button}
               >
@@ -130,12 +123,7 @@ const TravelCategoryForm: React.FC = () => {
               </Button>
               <Button
                 variant={travel.nbPers > 1 ? "contained" : "outlined"}
-                onClick={() =>
-                  updateTravel({
-                    ...travel,
-                    nbPers: 2
-                  })
-                }
+                onClick={handleChange("nbPers", 2)}
                 color="primary"
                 className={classes.button}
               >
@@ -165,7 +153,7 @@ const TravelCategoryForm: React.FC = () => {
                 }}
               />
               <Typography className={classes.personnesTypo}>
-                {travel.nbPers === 1 ? "Personne" : "Personnes"}
+                Personne(s)
               </Typography>
             </Paper>
           </Box>
@@ -180,7 +168,8 @@ const TravelCategoryForm: React.FC = () => {
             <Button
               variant={travel.category === category ? "contained" : "outlined"}
               key={idx}
-              onClick={handleChange(category as TravelCategoryType)}
+              // onClick={handleCategoryChange(category as TravelCategoryType)}
+              onClick={handleChange("category", category)}
               color="primary"
               className={classes.button}
             >

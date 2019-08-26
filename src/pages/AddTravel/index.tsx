@@ -4,7 +4,7 @@ import React from "react";
 import TravelNameForm, { isTravelNameFormValid } from "./TravelNameForm";
 import TravelCategoryForm, {
   isTravelCategoryFormValid
-} from "./TravelCategoryForm";
+} from "./TravelTypeForm";
 import TravelDepartureAndDestinationForm, {
   isTravelDepartureAndDestinationFormValid
 } from "./TravelDepartureAndDestinationForm";
@@ -194,6 +194,8 @@ const AddTravel = () => {
         return false;
     }
   }
+
+  console.log(travel);
 
   return (
     <TravelContext.Provider value={travelProviderValue}>
