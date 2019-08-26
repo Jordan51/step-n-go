@@ -150,10 +150,8 @@ const TravelTransportForm: React.FC<{
           </Grid>
 
           {/* Second Line */}
-          {/* Vol -> Compagnie */}
-          {/* Hotel -> Nom */}
           <Grid item xs={12} sm={2}>
-            <TextField
+            {/* <TextField
               id="travel-transport-ref"
               value={transport.ref}
               onChange={handleChange("ref")}
@@ -163,7 +161,7 @@ const TravelTransportForm: React.FC<{
               placeholder="Ex: AFR104"
               helperText="Référence"
               inputProps={{ "aria-label": "dense hidden label" }}
-            />
+            /> */}
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
