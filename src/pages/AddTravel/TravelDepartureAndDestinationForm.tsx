@@ -37,6 +37,9 @@ export function isTravelDepartureAndDestinationFormValid(
 
 const TravelDepartureAndDestinationForm: React.FC = () => {
   // const classes = useStyles();
+
+  // console.log("Render - Dep and Dest");
+
   return (
     <Grid
       container

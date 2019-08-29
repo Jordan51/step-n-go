@@ -25,6 +25,8 @@ const TravelDestinationForm: React.FC = () => {
     updateTravel({ ...travel, destination: newDestination });
   };
 
+  // console.log("Render - Dest");
+
   return (
     <Box className={classes.root}>
       <Typography variant="h6">Destination</Typography>

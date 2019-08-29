@@ -35,6 +35,8 @@ const TravelNameForm: React.FC = () => {
     updateTravel({ ...travel, retDate: travel.depDate });
   }
 
+  // console.log("Render - Name");
+
   return (
     <Box className={classes.root}>
       <Typography variant="h6">Nouveau voyage</Typography>

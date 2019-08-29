@@ -2,9 +2,7 @@ import React from "react";
 
 // Components
 import TravelNameForm, { isTravelNameFormValid } from "./TravelNameForm";
-import TravelCategoryForm, {
-  isTravelCategoryFormValid
-} from "./TravelTypeForm";
+import TravelTypeForm, { isTravelCategoryFormValid } from "./TravelTypeForm";
 import TravelDepartureAndDestinationForm, {
   isTravelDepartureAndDestinationFormValid
 } from "./TravelDepartureAndDestinationForm";
@@ -58,7 +56,7 @@ function getStepContent(step: number): JSX.Element {
     case 0:
       return <TravelNameForm />;
     case 1:
-      return <TravelCategoryForm />;
+      return <TravelTypeForm />;
     case 2:
       return <TravelDepartureAndDestinationForm />;
     case 3:
@@ -204,6 +202,8 @@ const AddTravel = () => {
     }
   }
 
+  // console.log("Render - Main");
+
   return (
     <TravelContext.Provider value={travelProviderValue}>
       <div className={classes.root}>
@@ -228,7 +228,7 @@ const AddTravel = () => {
           </Container>
         </div>
         <>
-          <Typography style={{ textAlign: "center" }}>{travel.id}</Typography>
+          {/* <Typography style={{ textAlign: "center" }}>{travel.id}</Typography> */}
           <Container className={classes.stepContainer}>
             {getStepContent(activeStep)}
           </Container>

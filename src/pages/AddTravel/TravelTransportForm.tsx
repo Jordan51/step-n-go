@@ -90,6 +90,8 @@ const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
     updateDate("hourB", transport.hourA);
   }
 
+  // console.log("Render - Transport");
+
   return (
     <Paper className={classes.paper}>
       <Typography className={classes.typoStep}>

@@ -104,6 +104,8 @@ const TravelTransportAndAccommodationForm: React.FC = () => {
     updateTravel({ ...travel, accommodations: newAccommodations });
   }
 
+  // console.log("Render - TAA");
+
   return (
     <Box className={classes.root}>
       <Typography variant="h6">Transport et hébergement</Typography>

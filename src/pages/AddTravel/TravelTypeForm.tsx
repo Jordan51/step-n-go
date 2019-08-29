@@ -69,7 +69,7 @@ export function isTravelCategoryFormValid(
   );
 }
 
-const TravelCategoryForm: React.FC = () => {
+const TravelTypeForm: React.FC = () => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
@@ -78,6 +78,8 @@ const TravelCategoryForm: React.FC = () => {
   ) => {
     updateTravel({ ...travel, [name]: value });
   };
+
+  // console.log("Render - Type");
 
   return (
     <Box className={classes.root}>
@@ -97,6 +99,7 @@ const TravelCategoryForm: React.FC = () => {
           <Paper className={classes.paper1}>
             {TravelTypes.map((type, idx) => (
               <Button
+                key={idx}
                 variant={type === travel.type ? "contained" : "outlined"}
                 onClick={handleChange("type", type)}
                 color="primary"
@@ -243,4 +246,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default TravelCategoryForm;
+export default TravelTypeForm;

@@ -72,6 +72,8 @@ const TravelAccommodationForm: React.FC<{
     updateDate("dateB", newdateB);
   }
 
+  // console.log("Render - Accommodation");
+
   return (
     <Paper className={classes.paper}>
       <Typography className={classes.typoStep}>
