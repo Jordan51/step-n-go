@@ -23,17 +23,25 @@ import {
 } from "@material-ui/core";
 
 import DeleteIcon from "@material-ui/icons/Delete";
+import AirportSB from "../../components/SearchBar/AirportSB";
 
-const TravelTransportForm: React.FC<{
+type Props = {
   id: string;
   handleDelete: () => void;
-}> = ({ id, handleDelete }) => {
+};
+
+const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
   const classes = useStyles();
   const { travel, updateTravel } = React.useContext(TravelContext);
 
   const transports = travel.transports;
   const index = transports.findIndex(t => t.id === id);
   const transport = transports[index];
+
+  function updateTransport(newTransport: TransportType) {
+    transports[index] = newTransport;
+    updateTravel({ ...travel, transports: transports });
+  }
 
   const handleChange = (name: keyof TransportType) => (
     event: React.ChangeEvent<HTMLInputElement>
@@ -42,9 +50,15 @@ const TravelTransportForm: React.FC<{
       ...transport,
       [name]: event.target.value
     };
+    updateTransport(newTransport);
+  };
 
-    transports[index] = newTransport;
-    updateTravel({ ...travel, transports: transports });
+  const updateLocation = (name: keyof TransportType, value: string) => {
+    const newTransport: TransportType = {
+      ...transport,
+      [name]: value
+    };
+    updateTransport(newTransport);
   };
 
   const updateDate = (name: keyof TransportType, date: Date) => {
@@ -52,8 +66,7 @@ const TravelTransportForm: React.FC<{
       ...transport,
       [name]: date as Date
     };
-    transports[index] = newTransport;
-    updateTravel({ ...travel, transports: transports });
+    updateTransport(newTransport);
   };
 
   const d0 = new Date();
@@ -114,17 +127,27 @@ const TravelTransportForm: React.FC<{
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              id="travel-transport-departure-location"
-              value={transport.depLocation}
-              onChange={handleChange("depLocation")}
-              margin="dense"
-              variant="outlined"
-              className={clsx(classes.textField, classes.dense)}
-              placeholder={`Ex: ${randomLocationExample}`}
-              helperText="Lieu de départ"
-              inputProps={{ "aria-label": "dense hidden label" }}
-            />
+            {transport.mode === "Avion" && (
+              <AirportSB
+                value={transport.depLocation}
+                handleSelect={v => updateLocation("depLocation", v)}
+                variant="outlined"
+                helperText="Aéroport de départ"
+              />
+            )}
+            {transport.mode !== "Avion" && (
+              <TextField
+                id="travel-transport-departure-location"
+                value={transport.depLocation}
+                onChange={handleChange("depLocation")}
+                margin="dense"
+                variant="outlined"
+                className={clsx(classes.textField, classes.dense)}
+                placeholder={`Ex: ${randomLocationExample}`}
+                helperText="Lieu de départ"
+                inputProps={{ "aria-label": "dense hidden label" }}
+              />
+            )}
           </Grid>
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
@@ -164,17 +187,27 @@ const TravelTransportForm: React.FC<{
             /> */}
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField
-              id="travel-transport-arrival-location"
-              value={transport.arrLocation}
-              onChange={handleChange("arrLocation")}
-              margin="dense"
-              variant="outlined"
-              className={clsx(classes.textField, classes.dense)}
-              placeholder={`Ex: ${randomLocationExample}`}
-              helperText="Lieu d'arriver"
-              inputProps={{ "aria-label": "dense hidden label" }}
-            />
+            {transport.mode === "Avion" && (
+              <AirportSB
+                value={transport.arrLocation}
+                handleSelect={v => updateLocation("arrLocation", v)}
+                variant="outlined"
+                helperText="Aéroport d'arriver"
+              />
+            )}
+            {transport.mode !== "Avion" && (
+              <TextField
+                id="travel-transport-arrival-location"
+                value={transport.arrLocation}
+                onChange={handleChange("arrLocation")}
+                margin="dense"
+                variant="outlined"
+                className={clsx(classes.textField, classes.dense)}
+                placeholder={`Ex: ${randomLocationExample}`}
+                helperText="Lieu d'arriver"
+                inputProps={{ "aria-label": "dense hidden label" }}
+              />
+            )}
           </Grid>
           <Grid item xs={6} sm={2}>
             <CustomDatePicker

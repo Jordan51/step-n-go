@@ -30,7 +30,6 @@ export type TransportType = {
   dateA: Date; // Departure date
   hourA: Date; // Departure hour
   arrLocation: string;
-  arrCity: string;
   dateB: Date; // Arrival date
   hourB: Date; // Arrival hour
   ref: string;
@@ -43,7 +42,6 @@ export const defaultTransport: TransportType = {
   dateA: new Date(),
   hourA: new Date(),
   arrLocation: "",
-  arrCity: "",
   dateB: new Date(),
   hourB: new Date(),
   mode: "",

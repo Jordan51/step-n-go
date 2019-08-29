@@ -1,3 +1,5 @@
+// TODO: use trim() !!!
+
 export function isStringValid(str: any): boolean {
   return isNaN(str) && typeof str === "string" && str !== "" && str.length > 2;
 }
