@@ -9,6 +9,7 @@ import { DepartureAndDestinationType } from "./TravelDepartureAndDestinationForm
 import { TravelContext } from "../Travel/TravelContext";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
+import CountrySB from "../../components/SearchBar/CountrySB";
 
 const TravelDestinationForm: React.FC = () => {
   const classes = useStyles();
@@ -25,6 +26,18 @@ const TravelDestinationForm: React.FC = () => {
     updateTravel({ ...travel, destination: newDestination });
   };
 
+  const handleSelect = (
+    name: keyof DepartureAndDestinationType,
+    value: string
+  ) => {
+    const newDeparture: DepartureAndDestinationType = {
+      ...travel.destination,
+      [name]: value
+    };
+
+    updateTravel({ ...travel, destination: newDeparture });
+  };
+
   // console.log("Render - Dest");
 
   return (
@@ -38,16 +51,12 @@ const TravelDestinationForm: React.FC = () => {
             direction="row"
             justify="center"
             alignItems="center"
-            spacing={3}
+            spacing={2}
           >
             <Grid item xs={12} sm={6}>
-              <TextField
-                id="travel-destination-country"
-                label="Pays"
-                className={classes.textField}
+              <CountrySB
                 value={travel.destination.country}
-                onChange={handleChange("country")}
-                margin="normal"
+                handleSelect={value => handleSelect("country", value)}
               />
             </Grid>
             <Grid item xs={12} sm={6}>

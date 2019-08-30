@@ -58,7 +58,6 @@ const SearchBar: React.FC<Props> = ({
       }
       getItemValue={item => itemToString(item)}
       wrapperStyle={{
-        marginTop: -8,
         display: "flex",
         flexDirection: "column"
       }}
@@ -71,8 +70,9 @@ const SearchBar: React.FC<Props> = ({
                 label={label}
                 placeholder={placeholder}
                 helperText={helperText}
-                variant={"outlined"}
-                margin={"dense"}
+                variant="outlined"
+                margin="dense"
+                className={classes.textfield}
                 inputProps={props}
                 // inputProps={{
                 //   "aria-autocomplete": props["aria-autocomplete"],
@@ -92,7 +92,8 @@ const SearchBar: React.FC<Props> = ({
                 fullWidth
                 label={label}
                 placeholder={placeholder}
-                margin={"normal"}
+                margin="normal"
+                className={classes.textfield}
                 inputProps={props}
               />
             )}
@@ -104,6 +105,7 @@ const SearchBar: React.FC<Props> = ({
           <Box className={classes.listRoot}>
             <List
               className={classes.listDiv}
+              style={variant === "standard" ? { top: 0 } : { top: -18 }}
               dense
               children={value.trim().length === 0 ? [] : items.slice(0, 5)}
             />
@@ -124,7 +126,11 @@ const SearchBar: React.FC<Props> = ({
         </div>
       )}
       value={value}
-      onChange={e => setValue(e.target.value)}
+      onChange={e => {
+        const value = e.target.value;
+        setValue(value);
+        if (!value) handleSelect(value);
+      }}
       onSelect={(value: string) => {
         setValue(value);
         handleSelect(value);
@@ -152,12 +158,14 @@ const useStyles = makeStyles((theme: Theme) =>
       "z-index": 999,
       width: "100%",
       padding: 0,
-      top: theme.spacing(-3),
       position: "absolute",
       backgroundColor: theme.palette.background.paper,
       borderRadius: theme.spacing(0.5),
       boxShadow:
         "rgba(0, 0, 0, 0.2) 0px 1px 5px 0px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 3px 1px -2px"
+    },
+    textfield: {
+      margin: 0
     }
   })
 );
