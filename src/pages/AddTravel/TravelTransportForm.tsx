@@ -3,8 +3,7 @@ import clsx from "clsx";
 
 import {
   transportModes,
-  TransportType,
-  randomLocationExample
+  TransportType
 } from "../../types/travel/transport/Transport";
 import { TravelContext } from "../Travel/TravelContext";
 import {
@@ -29,6 +28,9 @@ type Props = {
   id: string;
   handleDelete: () => void;
 };
+
+// TODO: Add test to make sure that the arrival hour and departure hour are different
+// FIXME: Form validation test not working anymore (you can continue with empty or incorrect fields!)
 
 const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
   const classes = useStyles();
@@ -68,6 +70,57 @@ const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
     };
     updateTransport(newTransport);
   };
+
+  function getSB({
+    item,
+    line,
+    handleSelect
+  }: {
+    item: keyof TransportType;
+    line: 0 | 1;
+    handleSelect: (value: string) => void;
+  }) {
+    const value = transport.hasOwnProperty(item)
+      ? (transport[item] as string)
+      : "undefined";
+
+    switch (transport.mode) {
+      case "Avion":
+        return (
+          <AirportSB
+            value={value}
+            helperText={`Aéroport ${line === 0 ? "de départ" : "d'arrivée"}`}
+            handleSelect={handleSelect}
+            variant="outlined"
+          />
+        );
+      case "":
+        return (
+          <TextField
+            disabled
+            margin="dense"
+            variant="outlined"
+            className={clsx(classes.textField, classes.dense)}
+            placeholder={`Sélectionnez un moyen de transport`}
+            helperText={`Lieu ${line === 0 ? "de départ" : "d'arrivée"}`}
+            inputProps={{ "aria-label": "dense hidden label" }}
+          />
+        );
+      default:
+        return (
+          <TextField
+            margin="dense"
+            value={value}
+            onChange={handleChange(item)}
+            variant="outlined"
+            className={clsx(classes.textField, classes.dense)}
+            placeholder={``}
+            helperText={`Lieu ${line === 0 ? "de départ" : "d'arrivée"}`}
+            inputProps={{ "aria-label": "dense hidden label" }}
+          />
+        );
+    }
+  }
 
   const d0 = new Date();
   const d1 = new Date(transport.dateA);
@@ -129,27 +182,11 @@ const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
             </TextField>
           </Grid>
           <Grid item xs={12} sm={6}>
-            {transport.mode === "Avion" && (
-              <AirportSB
-                value={transport.depLocation}
-                handleSelect={v => updateLocation("depLocation", v)}
-                variant="outlined"
-                helperText="Aéroport de départ"
-              />
-            )}
-            {transport.mode !== "Avion" && (
-              <TextField
-                id="travel-transport-departure-location"
-                value={transport.depLocation}
-                onChange={handleChange("depLocation")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                placeholder={`Ex: ${randomLocationExample}`}
-                helperText="Lieu de départ"
-                inputProps={{ "aria-label": "dense hidden label" }}
-              />
-            )}
+            {getSB({
+              item: "depLocation",
+              line: 0,
+              handleSelect: (v: string) => updateLocation("depLocation", v)
+            })}
           </Grid>
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
@@ -175,41 +212,13 @@ const TravelTransportForm: React.FC<Props> = ({ id, handleDelete }) => {
           </Grid>
 
           {/* Second Line */}
-          <Grid item xs={12} sm={2}>
-            {/* <TextField
-              id="travel-transport-ref"
-              value={transport.ref}
-              onChange={handleChange("ref")}
-              margin="dense"
-              variant="outlined"
-              className={clsx(classes.textField, classes.dense)}
-              placeholder="Ex: AFR104"
-              helperText="Référence"
-              inputProps={{ "aria-label": "dense hidden label" }}
-            /> */}
-          </Grid>
+          <Grid item xs={12} sm={2}></Grid>
           <Grid item xs={12} sm={6}>
-            {transport.mode === "Avion" && (
-              <AirportSB
-                value={transport.arrLocation}
-                handleSelect={v => updateLocation("arrLocation", v)}
-                variant="outlined"
-                helperText="Aéroport d'arriver"
-              />
-            )}
-            {transport.mode !== "Avion" && (
-              <TextField
-                id="travel-transport-arrival-location"
-                value={transport.arrLocation}
-                onChange={handleChange("arrLocation")}
-                margin="dense"
-                variant="outlined"
-                className={clsx(classes.textField, classes.dense)}
-                placeholder={`Ex: ${randomLocationExample}`}
-                helperText="Lieu d'arriver"
-                inputProps={{ "aria-label": "dense hidden label" }}
-              />
-            )}
+            {getSB({
+              item: "arrLocation",
+              line: 1,
+              handleSelect: (v: string) => updateLocation("arrLocation", v)
+            })}
           </Grid>
           <Grid item xs={6} sm={2}>
             <CustomDatePicker
