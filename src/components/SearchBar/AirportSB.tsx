@@ -28,18 +28,15 @@ function airportToString(airport: AirportT): string {
 function renderAirprot(airport: AirportT): JSX.Element {
   return (
     <>
-      <ListItem style={{ padding: "0 12px" }}>
-        <ListItemAvatar>
-          <Avatar>
-            <FlightIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={`${airport.iata} - ${airport.name}`}
-          secondary={`${airport.city}, ${airport.country}`}
-        />
-      </ListItem>
-      <Divider component="li" />
+      <ListItemAvatar>
+        <Avatar>
+          <FlightIcon />
+        </Avatar>
+      </ListItemAvatar>
+      <ListItemText
+        primary={`${airport.iata} - ${airport.name}`}
+        secondary={`${airport.city}, ${airport.country}`}
+      />
     </>
   );
 }

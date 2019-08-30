@@ -6,7 +6,14 @@ import deburr from "lodash/deburr";
 import { AirportT } from "./AirportSB";
 
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { Box, Paper, List, TextField } from "@material-ui/core";
+import {
+  Box,
+  Paper,
+  List,
+  TextField,
+  ListItem,
+  Divider
+} from "@material-ui/core";
 
 type Props = {
   items: AirportT[];
@@ -20,6 +27,8 @@ type Props = {
   renderItem: (item: any) => JSX.Element;
   variant?: "standard" | "outlined" | "filled";
 };
+
+// FIXME: TextField doesn't change the color when focused (onFocus() + onBlur() are overwritten)
 
 const SearchBar: React.FC<Props> = ({
   items,
@@ -35,15 +44,17 @@ const SearchBar: React.FC<Props> = ({
 }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(currentValue);
+  // const [open, setOpen] = React.useState(false);
+
+  // let myTextFieldRef = React.useRef(null);
 
   return (
     <ReactAutocomplete
       items={items}
       shouldItemRender={(item, value) =>
-        deburr(itemToString(item))
-          .toLowerCase()
+        deburr(itemToString(item).toLowerCase())
           // .replace(/[^a-zA-Z ]/g, "")
-          .indexOf(value.toLowerCase()) > -1
+          .indexOf(deburr(value.toLowerCase())) > -1
       }
       getItemValue={item => itemToString(item)}
       wrapperStyle={{
@@ -63,6 +74,18 @@ const SearchBar: React.FC<Props> = ({
                 variant={"outlined"}
                 margin={"dense"}
                 inputProps={props}
+                // inputProps={{
+                //   "aria-autocomplete": props["aria-autocomplete"],
+                //   "aria-expanded": props["aria-expanded"],
+                //   onClick: props.onClick,
+                //   onChange: props.onChange,
+                //   onKeyDown: props.onKeyDown,
+                //   onFocus: props.onFocus,
+                //   onBlur: props.onBlur,
+                //   ref: props.ref,
+                //   value: props.value
+                // }}
+                // inputRef={el => (myTextFieldRef = el)}
               />
             ) : (
               <TextField
@@ -76,25 +99,29 @@ const SearchBar: React.FC<Props> = ({
           </>
         );
       }}
-      renderMenu={(items, value, style) => {
+      renderMenu={(items, value) => {
         return (
-          <List className={classes.listRoot} dense>
-            <div
+          <Box className={classes.listRoot}>
+            <List
               className={classes.listDiv}
+              dense
               children={value.trim().length === 0 ? [] : items.slice(0, 5)}
             />
-          </List>
+          </Box>
         );
       }}
       renderItem={(item, highlighted) => (
-        <Box
-          key={getItemId(item)}
-          style={{
-            backgroundColor: highlighted ? "#eee" : "transparent"
-          }}
-        >
-          {renderItem(item)}
-        </Box>
+        <div key={getItemId(item)}>
+          <ListItem
+            style={{
+              padding: "0 12px",
+              backgroundColor: highlighted ? "#eee" : "transparent"
+            }}
+          >
+            {renderItem(item)}
+          </ListItem>
+          <Divider component="li" />
+        </div>
       )}
       value={value}
       onChange={e => setValue(e.target.value)}
@@ -102,6 +129,15 @@ const SearchBar: React.FC<Props> = ({
         setValue(value);
         handleSelect(value);
       }}
+      // onMenuVisibilityChange={(isOpen: boolean) => {
+      //   if (isOpen && myTextFieldRef)
+      //     setTimeout(() => {
+      //       console.log(myTextFieldRef);
+      //       // @ts-ignore
+      //       myTextFieldRef.focus();
+      //     }, 100);
+      // }}
+      // open={open}
     />
   );
 };
@@ -109,16 +145,19 @@ const SearchBar: React.FC<Props> = ({
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     listRoot: {
-      position: "relative",
       width: "100%",
-      padding: 0,
-      backgroundColor: theme.palette.background.paper
+      position: "relative"
     },
     listDiv: {
-      position: "absolute",
+      "z-index": 999,
       width: "100%",
+      padding: 0,
+      top: theme.spacing(-3),
+      position: "absolute",
       backgroundColor: theme.palette.background.paper,
-      "z-index": 999
+      borderRadius: theme.spacing(0.5),
+      boxShadow:
+        "rgba(0, 0, 0, 0.2) 0px 1px 5px 0px, rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 3px 1px -2px"
     }
   })
 );
